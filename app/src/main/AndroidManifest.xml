@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CreateReminderActivity" />
+        <activity android:name=".SelectContextActivity" />
+        <activity android:name=".SelectMethodActivity" />
+        <activity android:name=".EditTriggerActivity"></activity>
     </application>
 
 </manifest>

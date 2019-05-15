@@ -6,4 +6,75 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="headphone_actions">
+        <item>Plugging in</item>
+        <item>Unplugging</item>
+    </string-array>
+
+    <string-array name="time_actions">
+        <item>Every day at</item>
+        <item>Every hour at</item>
+        <item>Every day of the week at</item>
+        <item>Every month on the</item>
+
+    </string-array>
+
+    <string name="time_every_hour_description">
+
+    </string>
+    <string name="time_daily_description">
+
+    </string>
+    <string name="time_day_week_description">
+
+    </string>
+    <string name="time_monthly_description">
+
+    </string>
+
+
+    <string-array name="location_actions">
+        <item>Entering</item>
+        <item>Exiting</item>
+        <item>In</item>
+    </string-array>
+
+    <string name="location_entering_description">
+        Activates when you enter the current specified location
+    </string>
+
+    <string name="location_exiting_description">
+        Activates when you exit the current specified location
+    </string>
+    <string name="location_in_description">
+        Activates when you are inside the current specified location for a certain amount of time
+    </string>
+
+    <string-array name="activity_actions">
+        <item>During</item>
+        <item>Starting</item>
+        <item>Stopping</item>
+    </string-array>
+
+    <string name="activity_during_description">
+        Activates when you are currently engaged in one of the specified activities below
+    </string>
+
+    <string name="activity_starting_description">
+        Activates when you begin to engage in one of the specified activities below
+    </string>
+    <string name="activity_stopping_description">
+        Activates when you stop doing in one of the specified activities below
+    </string>
+
+    <string-array name="days_of_the_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
 </resources>

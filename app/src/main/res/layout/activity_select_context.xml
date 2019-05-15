@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectContextActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <Button
+        android:id="@+id/btn_headphone"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="headphone"
+        android:text="Headphone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_time"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:onClick="time"
+        android:text="Time"
+        app:layout_constraintStart_toEndOf="@+id/btn_location"
+        app:layout_constraintTop_toBottomOf="@+id/btn_activity" />
+
+    <Button
+        android:id="@+id/btn_activity"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:onClick="activity"
+        android:text="Activity"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_headphone"
+        app:layout_constraintStart_toEndOf="@+id/btn_headphone" />
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:onClick="location"
+        android:text="Location"
+        app:layout_constraintStart_toStartOf="@+id/btn_headphone"
+        app:layout_constraintTop_toBottomOf="@+id/btn_headphone" />
+
+</android.support.constraint.ConstraintLayout>

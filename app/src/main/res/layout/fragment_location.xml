@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.LocationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="14dp"
+        android:text="Complete trigger"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txv_description2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/activity_during_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/edt_latitude"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Latitude"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txv_description2" />
+
+    <EditText
+        android:id="@+id/edt_longitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Longitude"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/edt_latitude"
+        app:layout_constraintStart_toStartOf="@+id/edt_latitude"
+        app:layout_constraintTop_toBottomOf="@+id/edt_latitude" />
+
+    <EditText
+        android:id="@+id/edt_radius"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Radius"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/edt_longitude"
+        app:layout_constraintStart_toStartOf="@+id/edt_longitude"
+        app:layout_constraintTop_toBottomOf="@+id/edt_longitude" />
+
+    <EditText
+        android:id="@+id/edt_dwelltime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Wait Time"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/edt_radius"
+        app:layout_constraintStart_toStartOf="@+id/edt_radius"
+        app:layout_constraintTop_toBottomOf="@+id/edt_radius" />
+</android.support.constraint.ConstraintLayout>
