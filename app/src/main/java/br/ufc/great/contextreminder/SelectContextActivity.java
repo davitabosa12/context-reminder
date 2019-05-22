@@ -15,7 +15,7 @@ public class SelectContextActivity extends AppCompatActivity {
     }
 
     public void headphone(View v){
-        startActivityForResult(new Intent(this, SelectMethodActivity.class));
+        startActivityForResult(new Intent(this, SelectMethodActivity.class), 987);
     }
     public void location(View v){
 
