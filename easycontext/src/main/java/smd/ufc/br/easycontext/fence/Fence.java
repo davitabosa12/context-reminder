@@ -1,8 +1,14 @@
-package smd.ufc.br.easycontext;
+package smd.ufc.br.easycontext.fence;
 
 import com.google.android.gms.awareness.fence.AwarenessFence;
 
-public abstract class Fence {
+import java.io.Serializable;
+
+import smd.ufc.br.easycontext.fence.method.FenceMethod;
+import smd.ufc.br.easycontext.fence.parameter.FenceParameter;
+import smd.ufc.br.easycontext.fence.type.FenceType;
+
+public abstract class Fence implements Serializable {
     private String name;
     private FenceType type;
     private FenceMethod method;
@@ -46,9 +52,37 @@ public abstract class Fence {
     private boolean validateMethods(){
         return true;
     }
-	public FenceAction getAction() {
+
+    public Fence setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public FenceType getType() {
+        return type;
+    }
+
+    public Fence setType(FenceType type) {
+        this.type = type;
+        return this;
+    }
+
+    public abstract void setMethod(FenceMethod method);
+
+    public Fence setAction(FenceAction action) {
+        this.action = action;
+        return this;
+    }
+
+    public FenceParameter getParams() {
+        return params;
+    }
+
+    public FenceAction getAction() {
 		return action;
 	}
+
+    public abstract void setParams(FenceParameter params);
 
 
 	//@SuppressLint("MissingPermission")

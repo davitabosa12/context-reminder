@@ -2,6 +2,7 @@ package br.ufc.great.contextreminder;
 
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.lang.reflect.Method;
 
 public class SelectMethodActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    public static final int REQUEST_CODE = 3211;
     ListView dynamic;
     String[] options;
     ArrayAdapter<String> adapter;
@@ -52,25 +57,23 @@ public class SelectMethodActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(this, options[position], Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, EditTriggerActivity.class);
         i.putExtra("provider", selectedContext);
         i.putExtra("method", options[position]);
-
+        startActivityForResult(i, REQUEST_CODE);
     }
 
-    private void handleHeadphoneClick(int position) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                setResult(RESULT_OK, data);
+            } else{
+                setResult(resultCode);
+            }
 
-    }
-
-    private void handleActivityClick(int position) {
-
-    }
-
-    private void handleTimeClick(int position) {
-
-    }
-
-    private void handleLocationClick(int position) {
-
+        }
+        finish();
     }
 }

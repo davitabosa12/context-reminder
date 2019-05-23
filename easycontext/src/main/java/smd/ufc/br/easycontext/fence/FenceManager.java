@@ -1,4 +1,4 @@
-package smd.ufc.br.easycontext;
+package smd.ufc.br.easycontext.fence;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import smd.ufc.br.easycontext.GeneralReceiver;
 
 /**
  * Created by davitabosa on 08/08/2018.
@@ -83,6 +85,19 @@ public class FenceManager {
         }
 
     }
+
+    public Task registerFence2(Fence fence){
+        Intent i = new Intent(context, GeneralReceiver.class);
+        String actionName = fence.getAction().getClass().getName();
+        i.putExtra("actionName", actionName);
+        //pending intent to trigger GeneralReceiver
+        PendingIntent pi = PendingIntent.getBroadcast(context, new Random().nextInt(), i , PendingIntent.FLAG_CANCEL_CURRENT);
+        //register info to Awareness API
+        Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(), fence.getMethod(), pi).build());
+        return t;
+    }
+
+
     @Nullable
     public Task unregisterFence(final Fence fence){
         if(isFenceRegistered(fence)){
