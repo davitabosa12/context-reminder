@@ -28,23 +28,16 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     private static final String ARG_PARAM2 = "param2";
 
     private OnTimeRuleSelected mListener;
-
+    private String method;
     private EditText edtTime;
     private CheckBox[] daysOfWeek;
+    private String[] timeMethods;
     private int hourOfDay, minute;
     public TimeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TimeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static TimeFragment newInstance(String param1, String param2) {
         TimeFragment fragment = new TimeFragment();
         Bundle args = new Bundle();
@@ -55,15 +48,21 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     }
 
     public static Fragment newInstance(String method) {
-
+        TimeFragment fragment = new TimeFragment();
+        Bundle args = new Bundle();
+        args.putString("method", method);
+        fragment.setArguments(args);
+        return fragment;
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
+        super.onCreate(savedInstanceState);
+        timeMethods = getContext().getResources().getStringArray(R.array.time_actions);
+        if (getArguments() != null) {
+            this.method = getArguments().getString("method");
         }
     }
 
@@ -98,7 +97,24 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     }
 
     private void updateUI() {
+        if(method.equalsIgnoreCase(timeMethods[0])){
+            //every day at
+            setDaysOfWeekVisibility(false);
+        } else if(method.equalsIgnoreCase(timeMethods[1])){
+            //Every hour at
+        } else if(method.equalsIgnoreCase(timeMethods[2])){
+            //Every day of the week at
+            setDaysOfWeekVisibility(true);
+        } else if(method.equalsIgnoreCase(timeMethods[3])){
+            //Every month on the
+            setDaysOfWeekVisibility(false);
+        }
+    }
 
+    private void setDaysOfWeekVisibility(boolean show){
+        for(int i = 0; i < daysOfWeek.length; i++){
+            daysOfWeek[i].setVisibility(show? View.VISIBLE : View.GONE);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
