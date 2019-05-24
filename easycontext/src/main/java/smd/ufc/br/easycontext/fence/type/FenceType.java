@@ -11,6 +11,7 @@ public enum FenceType {
 	HEADPHONE("Headphone"),
 
 	LOCATION("Location"),
+	TIME("Time"),
 	OR("or"),
 	AND("and"),
 	NOT("not"),

@@ -69,6 +69,11 @@ public class HeadphoneFence extends Fence {
         }
     }
 
+    @Override
+    public FenceMethod getMethodName() {
+        return method;
+    }
+
     public static class Builder{
         private HeadphoneFence headphoneFence;
         public Builder() {

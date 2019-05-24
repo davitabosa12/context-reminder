@@ -11,11 +11,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import br.ufc.great.contextreminder.model.Reminder;
-import smd.ufc.br.easycontext.Fence;
+import smd.ufc.br.easycontext.fence.AggregateFence;
+import smd.ufc.br.easycontext.fence.DetectedActivityFence;
+import smd.ufc.br.easycontext.fence.Fence;
+import smd.ufc.br.easycontext.fence.HeadphoneFence;
+import smd.ufc.br.easycontext.fence.LocationFence;
+import smd.ufc.br.easycontext.fence.TimeFence;
+
 
 public class CreateReminderActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_CREATE = 193;
+    public static final int REQUEST_CODE_EDIT = 15478;
     Reminder reminder;
     Fence rule;
     Button btnCreateContext;
@@ -56,7 +63,8 @@ public class CreateReminderActivity extends AppCompatActivity {
         if (rule == null) {
             //error
         } else {
-
+            Intent i = new Intent(this, EditTriggerActivity.class);
+            startActivityForResult(i, REQUEST_CODE_EDIT);
         }
     }
 
@@ -64,8 +72,31 @@ public class CreateReminderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_CREATE:
+                rule = (Fence) data.getSerializableExtra("fence");
+                showEdit();
+                updateButtonIcon();
                 break;
 
+
+            case REQUEST_CODE_EDIT:
+                rule = (Fence) data.getSerializableExtra("fence");
+                updateButtonIcon();
+                break;
+        }
+    }
+
+    private void updateButtonIcon() {
+        if(rule instanceof HeadphoneFence){
+
+            btnEditContext.setImageResource(R.drawable.ic_headset_gray_24dp);
+        } else if(rule instanceof LocationFence){
+            btnEditContext.setImageResource(R.drawable.ic_gps_fixed_gray_24dp);
+        } else if(rule instanceof DetectedActivityFence){
+            btnEditContext.setImageResource(R.drawable.ic_activity_gray_24dp);
+        } else if(rule instanceof TimeFence){
+            btnEditContext.setImageResource(R.drawable.ic_access_time_black_24dp);
+        } else if(rule instanceof AggregateFence){
+            btnEditContext.setImageResource(R.drawable.ic_compound_gray_24dp);
         }
     }
 

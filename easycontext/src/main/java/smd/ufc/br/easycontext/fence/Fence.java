@@ -87,6 +87,7 @@ public abstract class Fence implements Serializable {
 
 	//@SuppressLint("MissingPermission")
     public abstract AwarenessFence getMethod();
+    public abstract FenceMethod getMethodName();
     /*public AwarenessFence getMethod() {
         DetectedActivityParameter daParams;
         LocationParameter locParams;
@@ -145,5 +146,22 @@ public abstract class Fence implements Serializable {
 	public String getName() {
 		return name;
 	}
+
+	public abstract static class Builder{
+	    protected FenceAction action;
+	    protected String name;
+        public Builder setAction(FenceAction action){
+            this.action = action;
+            return this;
+        }
+
+        public Builder setName(String name){
+            this.name = name;
+            return this;
+        }
+
+        public abstract Fence build();
+
+    }
 
 }

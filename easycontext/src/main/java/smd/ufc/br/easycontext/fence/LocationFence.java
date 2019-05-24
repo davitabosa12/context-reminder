@@ -53,4 +53,9 @@ public class LocationFence extends Fence {
                 return null;
         }
     }
+
+    @Override
+    public FenceMethod getMethodName() {
+        return method;
+    }
 }
