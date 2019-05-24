@@ -14,18 +14,6 @@ import smd.ufc.br.easycontext.fence.type.FenceType;
 public class TimeFence extends Fence {
     private TimeMethod method;
     private TimeParameter parameter;
-    int timeInstant;
-    long startOffsetMillis;
-    long stopOffsetMillis;
-
-    TimeZone timeZone;
-    long startTimeOfDayMillis;
-    long stopTimeOfDayMillis;
-    long startTimeMillis;
-    long stopTimeMillis;
-
-    int dayOfWeek;
-    int timeInterval;
 
     TimeFence(String name, FenceType type, FenceAction action, TimeMethod method, FenceParameter params) {
         super(name, FenceType.TIME, action, params);
@@ -38,7 +26,7 @@ public class TimeFence extends Fence {
 
     @Override
     public void setParams(FenceParameter params) {
-        Builder b = new Builder();
+
 
     }
 

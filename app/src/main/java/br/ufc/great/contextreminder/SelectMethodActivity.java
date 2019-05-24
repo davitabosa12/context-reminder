@@ -1,7 +1,6 @@
 package br.ufc.great.contextreminder;
 
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.lang.reflect.Method;
+import br.ufc.great.contextreminder.model.trigger.Trigger;
 
 public class SelectMethodActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -20,12 +19,12 @@ public class SelectMethodActivity extends AppCompatActivity implements AdapterVi
     ListView dynamic;
     String[] options;
     ArrayAdapter<String> adapter;
-    FenceRules selectedContext;
+    Provider selectedContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_method);
-        selectedContext = (FenceRules) getIntent().getSerializableExtra("selected_context");
+        selectedContext = (Provider) getIntent().getSerializableExtra("selected_context");
         if(selectedContext == null){
             Log.e("SelectMethodActivity", "No selected context provided");
             throw new RuntimeException("ERROR");
@@ -60,8 +59,12 @@ public class SelectMethodActivity extends AppCompatActivity implements AdapterVi
         Toast.makeText(this, options[position], Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, EditTriggerActivity.class);
         i.putExtra("provider", selectedContext);
-        i.putExtra("method", options[position]);
+        i.putExtra("trigger", extractTrigger(options[position]));
         startActivityForResult(i, REQUEST_CODE);
+    }
+
+    private Trigger extractTrigger(String option) {
+        //TODO: Read from Strings.xml and return the appropriate enum.
     }
 
     @Override
@@ -76,4 +79,6 @@ public class SelectMethodActivity extends AppCompatActivity implements AdapterVi
         }
         finish();
     }
+
+
 }

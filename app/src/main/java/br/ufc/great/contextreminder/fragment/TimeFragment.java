@@ -17,8 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.ufc.great.contextreminder.EditTriggerActivity;
+import br.ufc.great.contextreminder.Provider;
 import br.ufc.great.contextreminder.R;
-
+import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 
 
 public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, View.OnClickListener {
@@ -28,7 +29,7 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     private static final String ARG_PARAM2 = "param2";
 
     private OnTimeRuleSelected mListener;
-    private String method;
+    private TimeTrigger trigger;
     private EditText edtTime;
     private CheckBox[] daysOfWeek;
     private String[] timeMethods;
@@ -37,20 +38,10 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         // Required empty public constructor
     }
 
-
-    public static TimeFragment newInstance(String param1, String param2) {
+    public static Fragment newInstance(TimeTrigger trigger) {
         TimeFragment fragment = new TimeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static Fragment newInstance(String method) {
-        TimeFragment fragment = new TimeFragment();
-        Bundle args = new Bundle();
-        args.putString("method", method);
+        args.putSerializable("trigger", trigger);
         fragment.setArguments(args);
         return fragment;
 
@@ -62,7 +53,9 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         super.onCreate(savedInstanceState);
         timeMethods = getContext().getResources().getStringArray(R.array.time_actions);
         if (getArguments() != null) {
-            this.method = getArguments().getString("method");
+            this.trigger = (TimeTrigger) getArguments().getSerializable("trigger");
+        } else {
+            throw new RuntimeException("A TimeTrigger was not provided. Always initialize with newInstance()");
         }
     }
 
@@ -97,30 +90,26 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     }
 
     private void updateUI() {
-        if(method.equalsIgnoreCase(timeMethods[0])){
-            //every day at
-            setDaysOfWeekVisibility(false);
-        } else if(method.equalsIgnoreCase(timeMethods[1])){
-            //Every hour at
-        } else if(method.equalsIgnoreCase(timeMethods[2])){
-            //Every day of the week at
-            setDaysOfWeekVisibility(true);
-        } else if(method.equalsIgnoreCase(timeMethods[3])){
-            //Every month on the
-            setDaysOfWeekVisibility(false);
+
+        switch (trigger){
+            case EVERY_DAY_AT:
+                setDaysOfWeekVisibility(false);
+                break;
+            case EVERY_HOUR_AT:
+                break;
+            case EVERY_MONTH_ON_THE:
+                setDaysOfWeekVisibility(false);
+                break;
+            case EVERY_DAY_OF_THE_WEEK_AT:
+                setDaysOfWeekVisibility(true);
+                break;
         }
+
     }
 
     private void setDaysOfWeekVisibility(boolean show){
         for(int i = 0; i < daysOfWeek.length; i++){
             daysOfWeek[i].setVisibility(show? View.VISIBLE : View.GONE);
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Bundle bundle) {
-        if (mListener != null) {
-            mListener.onTimeRuleSelected(bundle);
         }
     }
 
@@ -168,6 +157,9 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
                     days[i] = daysOfWeek[i].isChecked();
                 }
                 Bundle t = new Bundle();
+                t.putSerializable("provider", Provider.TIME);
+                t.putSerializable("trigger", trigger);
+                //put info about the trigger
                 t.putInt("hour", hourOfDay);
                 t.putInt("minute", minute);
                 t.putBooleanArray("daysOfWeek", days);

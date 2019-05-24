@@ -20,19 +20,19 @@ public class SelectContextActivity extends AppCompatActivity {
     }
 
     public void headphone(View v){
-        i.putExtra("selected_context", FenceRules.HEADPHONE);
+        i.putExtra("selected_context", Provider.HEADPHONE);
         startActivityForResult(i, SELECT_CONTEXT_REQUEST_CODE);
     }
     public void location(View v){
-        i.putExtra("selected_context", FenceRules.LOCATION);
+        i.putExtra("selected_context", Provider.LOCATION);
         startActivityForResult(i, SELECT_CONTEXT_REQUEST_CODE);
     }
     public void activity(View v){
-        i.putExtra("selected_context", FenceRules.ACTIVITY);
+        i.putExtra("selected_context", Provider.ACTIVITY);
         startActivityForResult(i, SELECT_CONTEXT_REQUEST_CODE);
     }
     public void time(View v){
-        i.putExtra("selected_context", FenceRules.TIME);
+        i.putExtra("selected_context", Provider.TIME);
         startActivityForResult(i, SELECT_CONTEXT_REQUEST_CODE);
     }
 

@@ -64,6 +64,7 @@ public class CreateReminderActivity extends AppCompatActivity {
             //error
         } else {
             Intent i = new Intent(this, EditTriggerActivity.class);
+
             startActivityForResult(i, REQUEST_CODE_EDIT);
         }
     }
@@ -72,7 +73,7 @@ public class CreateReminderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_CREATE:
-                rule = (Fence) data.getSerializableExtra("fence");
+                Provider provider = (Provider) data.getSerializableExtra("provider");
                 showEdit();
                 updateButtonIcon();
                 break;

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.FrameLayout;
 
 import java.io.Serializable;
 
@@ -22,8 +21,9 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
 
     private static final String TAG ="EditTriggerActivity";
     FragmentManager fm;
+
     String method;
-    FenceRules provider;
+    Provider provider;
     Fence fenceToBeEdited;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,14 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
         fenceToBeEdited = (Fence) getIntent().getSerializableExtra("fence");
         if (fenceToBeEdited == null) {
             //user is creating new fence...
-            provider = (FenceRules) getIntent().getSerializableExtra("provider");
-
-            method = getIntent().getStringExtra("method");
+            provider = (Provider) getIntent().getSerializableExtra("provider");
+            //TODO: trigger provided is a string from strings.xml. Extract accordingly.
+            method = getIntent().getStringExtra("trigger");
             updateFragment();
         } else {
             //fence already exists, get provider and method from info
             provider = extractFenceRules(fenceToBeEdited.getType());
-            method = fenceToBeEdited.getMethod();
+            //method = extractMethodName(provider, fenceToBeEdited.getMethodName());
         }
 
 
@@ -82,27 +82,25 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
     public void onTimeRuleSelected(Bundle time) {
         if(time.getBoolean("cancel"))
             Log.d(TAG, "onTimeRuleSelected: USER CANCELED");
-        else
-        Log.d(TAG, "onTimeRuleSelected: " + time.toString());
+        else {
+            time.getString("");
+        }
     }
 
-    public FenceRules extractFenceRules(FenceType ft){
+    public Provider extractFenceRules(FenceType ft){
         switch (ft){
             case LOCATION:
-                return FenceRules.LOCATION;
+                return Provider.LOCATION;
             case HEADPHONE:
-                return FenceRules.HEADPHONE;
+                return Provider.HEADPHONE;
             case DETECTED_ACTIVITY:
-                return FenceRules.ACTIVITY;
+                return Provider.ACTIVITY;
             case TIME:
-                return FenceRules.TIME;
+                return Provider.TIME;
                 default:
                     throw new RuntimeException("Extract fence rule failed, not location, headphone, activity or time");
         }
 
-        public String extractMethod(AwarenessFence fence){
-
-        }
 
     }
 }
