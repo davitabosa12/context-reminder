@@ -19,6 +19,14 @@
 
     </string-array>
 
+    <string-array name="time_minutes">
+        <item>00</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+
+    </string-array>
+
     <string-array name="days_of_month">
         <item>1st</item>
         <item>2nd</item>

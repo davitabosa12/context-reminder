@@ -1,23 +1,30 @@
 package br.ufc.great.contextreminder;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
 import br.ufc.great.contextreminder.fragment.ActivityFragment;
 import br.ufc.great.contextreminder.fragment.LocationFragment;
 import br.ufc.great.contextreminder.fragment.TimeFragment;
+import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
+import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
+import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
+import br.ufc.great.contextreminder.model.trigger.Trigger;
 import smd.ufc.br.easycontext.fence.Fence;
 import smd.ufc.br.easycontext.fence.HeadphoneFence;
 import smd.ufc.br.easycontext.fence.type.FenceType;
 
-public class EditTriggerActivity extends AppCompatActivity implements TimeFragment.OnTimeRuleSelected {
+public class EditTriggerActivity extends AppCompatActivity implements TimeFragment.OnTimeRuleSelected,
+LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected{
 
     private static final String TAG ="EditTriggerActivity";
     FragmentManager fm;
@@ -25,6 +32,8 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
     String method;
     Provider provider;
     Fence fenceToBeEdited;
+    private Trigger trigger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +43,7 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
             //user is creating new fence...
             provider = (Provider) getIntent().getSerializableExtra("provider");
             //TODO: trigger provided is a string from strings.xml. Extract accordingly.
-            method = getIntent().getStringExtra("trigger");
+            trigger = (Trigger) getIntent().getSerializableExtra("trigger");
             updateFragment();
         } else {
             //fence already exists, get provider and method from info
@@ -52,15 +61,15 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
         Fragment fragment;
         switch(provider){
             case LOCATION:
-                fragment = LocationFragment.newInstance(method);
+                fragment = LocationFragment.newInstance((LocationTrigger) trigger);
                 ft.replace(R.id.frame, fragment);
                 break;
             case TIME:
-                fragment = TimeFragment.newInstance(method);
+                fragment = TimeFragment.newInstance((TimeTrigger) trigger);
                 ft.replace(R.id.frame, fragment);
                 break;
             case ACTIVITY:
-                fragment = ActivityFragment.newInstance(method);
+                fragment = ActivityFragment.newInstance((ActivityTrigger) trigger);
                 ft.replace(R.id.frame, fragment);
                 break;
             case HEADPHONE:
@@ -80,12 +89,18 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
 
     @Override
     public void onTimeRuleSelected(Bundle time) {
-        if(time.getBoolean("cancel"))
+        if(time.getBoolean("cancel")){
             Log.d(TAG, "onTimeRuleSelected: USER CANCELED");
+            setResult(RESULT_CANCELED);
+        }
         else {
-            time.getString("");
+            Intent response = new Intent();
+            response.putExtras(time);
+            setResult(RESULT_OK, response);
         }
     }
+
+
 
     public Provider extractFenceRules(FenceType ft){
         switch (ft){
@@ -102,5 +117,30 @@ public class EditTriggerActivity extends AppCompatActivity implements TimeFragme
         }
 
 
+    }
+
+    @Override
+    public void onActivityRuleSelected(Bundle activity) {
+        if(activity.getBoolean("cancel")){
+            Toast.makeText(this, "USER CANCELED", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED);
+        } else {
+            Intent response = new Intent();
+            response.putExtras(activity);
+            setResult(RESULT_OK, response);
+        }
+        finish();
+    }
+
+    @Override
+    public void onLocationRuleSelected(Bundle location) {
+        if(location.getBoolean("cancel")){
+            Toast.makeText(this, "USER CANCELED", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED);
+        } else {
+            Intent response = new Intent();
+            response.putExtras(location);
+            setResult(RESULT_OK, response);
+        }
     }
 }

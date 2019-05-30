@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -56,7 +57,7 @@ public class FenceManager {
         return true;
     }
 
-    @Nullable
+    @Deprecated
     public Task registerFence(Fence fence){
         //check if fence is already registered.
         if(isFenceRegistered(fence)){
@@ -69,7 +70,7 @@ public class FenceManager {
             BroadcastReceiver myReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    theFenceAction.doOperation(context, FenceState.extract(intent));
+                    theFenceAction.doOperation(context, FenceState.extract(intent), intent.getBundleExtra("user_provided"));
                 }
             };
 
@@ -86,10 +87,11 @@ public class FenceManager {
 
     }
 
-    public Task registerFence2(Fence fence){
+    public Task registerFence2(Fence fence, Bundle extras){
         Intent i = new Intent(context, GeneralReceiver.class);
         String actionName = fence.getAction().getClass().getName();
         i.putExtra("actionName", actionName);
+        i.putExtra("user_provided", extras);
         //pending intent to trigger GeneralReceiver
         PendingIntent pi = PendingIntent.getBroadcast(context, new Random().nextInt(), i , PendingIntent.FLAG_CANCEL_CURRENT);
         //register info to Awareness API

@@ -3,6 +3,7 @@ package smd.ufc.br.easycontext;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.awareness.fence.FenceState;
@@ -28,9 +29,10 @@ public class GeneralReceiver extends BroadcastReceiver {
         //TODO: Redirect behavior to registered Actions
 
         String className = intent.getStringExtra("actionName");
+        Bundle extras = intent.getBundleExtra("user_provided");
         try {
             FenceAction action = (FenceAction) Class.forName(className).newInstance();
-            action.doOperation(context, state);
+            action.doOperation(context, state, extras);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {

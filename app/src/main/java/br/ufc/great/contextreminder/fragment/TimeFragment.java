@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -25,14 +26,13 @@ import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private OnTimeRuleSelected mListener;
     private TimeTrigger trigger;
     private EditText edtTime;
     private CheckBox[] daysOfWeek;
     private String[] timeMethods;
+    private Spinner spDaysOfMonth, spTimeMinutes;
     private int hourOfDay, minute;
     public TimeFragment() {
         // Required empty public constructor
@@ -79,6 +79,9 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         daysOfWeek[5] = getActivity().findViewById(R.id.cb_friday);
         daysOfWeek[6] = getActivity().findViewById(R.id.cb_saturday);
 
+        spDaysOfMonth = getActivity().findViewById(R.id.sp_days_month);
+        spTimeMinutes = getActivity().findViewById(R.id.sp_time_minutes);
+
         getActivity().findViewById(R.id.btn_ok).setOnClickListener(this);
         getActivity().findViewById(R.id.btn_cancel).setOnClickListener(this);
 
@@ -94,13 +97,26 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         switch (trigger){
             case EVERY_DAY_AT:
                 setDaysOfWeekVisibility(false);
+                spTimeMinutes.setVisibility(View.GONE);
+                spDaysOfMonth.setVisibility(View.GONE);
                 break;
             case EVERY_HOUR_AT:
+                setDaysOfWeekVisibility(false);
+                spDaysOfMonth.setVisibility(View.GONE);
+                edtTime.setVisibility(View.GONE);
+
+                spTimeMinutes.setVisibility(View.VISIBLE);
                 break;
             case EVERY_MONTH_ON_THE:
                 setDaysOfWeekVisibility(false);
+                spTimeMinutes.setVisibility(View.GONE);
+
+                spDaysOfMonth.setVisibility(View.VISIBLE);
                 break;
             case EVERY_DAY_OF_THE_WEEK_AT:
+                spTimeMinutes.setVisibility(View.GONE);
+                spDaysOfMonth.setVisibility(View.GONE);
+
                 setDaysOfWeekVisibility(true);
                 break;
         }
@@ -156,6 +172,8 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
                 for(int i = 0; i < daysOfWeek.length; i++){
                     days[i] = daysOfWeek[i].isChecked();
                 }
+                int daysMonth = spDaysOfMonth.getSelectedItemPosition();
+                int timeMinutes = spTimeMinutes.getSelectedItemPosition();
                 Bundle t = new Bundle();
                 t.putSerializable("provider", Provider.TIME);
                 t.putSerializable("trigger", trigger);
@@ -163,6 +181,8 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
                 t.putInt("hour", hourOfDay);
                 t.putInt("minute", minute);
                 t.putBooleanArray("daysOfWeek", days);
+                t.putInt("time_minutes", 15* timeMinutes);
+                t.putInt("days_month", daysMonth);
 
                 mListener.onTimeRuleSelected(t);
                 break;

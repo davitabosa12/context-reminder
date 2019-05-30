@@ -66,4 +66,52 @@ public class DetectedActivityFence extends Fence {
                 return null;
         }
     }
+
+    @Override
+    public FenceMethod getMethodName() {
+        return null;
+    }
+
+    public static class Builder extends Fence.Builder{
+
+        DetectedActivityParameter.Builder params;
+        DAMethod method;
+        public Builder(){
+            params = new DetectedActivityParameter.Builder();
+        }
+
+        public Builder addActivityType(int activityType){
+            params.addActivityType(activityType);
+
+            return this;
+        }
+        public Builder during(int ...activityTypes){
+            method = DAMethod.DA_DURING;
+            for(int i = 0; i < activityTypes.length; i++){
+                params.addActivityType(activityTypes[i]);
+            }
+            return this;
+        }
+        public Builder starting(int ...activityTypes){
+            method = DAMethod.DA_STARTING;
+            for(int i = 0; i < activityTypes.length; i++){
+                params.addActivityType(activityTypes[i]);
+            }
+            return this;
+        }
+        public Builder stopping(int ...activityTypes){
+            method = DAMethod.DA_STOPPING;
+            for(int i = 0; i < activityTypes.length; i++){
+                params.addActivityType(activityTypes[i]);
+            }
+            return this;
+        }
+
+
+
+        @Override
+        public Fence build() {
+            return new DetectedActivityFence(name, method, action, params.build());
+        }
+    }
 }

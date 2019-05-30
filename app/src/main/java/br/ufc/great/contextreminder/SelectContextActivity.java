@@ -39,7 +39,13 @@ public class SelectContextActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == SELECT_CONTEXT_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                setResult(RESULT_OK, data);
+            } else {
+                setResult(resultCode);
+            }
 
         }
+        finish();
     }
 }

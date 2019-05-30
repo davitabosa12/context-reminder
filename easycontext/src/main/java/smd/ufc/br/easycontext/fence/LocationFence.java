@@ -58,4 +58,40 @@ public class LocationFence extends Fence {
     public FenceMethod getMethodName() {
         return method;
     }
+
+    public static class Builder extends Fence.Builder{
+        LocationParameter.Builder params;
+        LocationMethod method;
+        long dwell;
+        public Builder(){
+            this.params = new LocationParameter.Builder();
+        }
+        public Builder entering(double latitude, double longitude, double radius){
+            params.setLatitude(latitude);
+            params.setLongitude(longitude);
+            params.setRadius(radius);
+            this.method = LocationMethod.LOCATION_ENTERING;
+            return this;
+        }
+        public Builder exiting(double latitude, double longitude, double radius){
+            params.setLatitude(latitude);
+            params.setLongitude(longitude);
+            params.setRadius(radius);
+            this.method = LocationMethod.LOCATION_EXITING;
+            return this;
+
+        }
+        public Builder in(double latitude, double longitude, double radius, long dwell){
+            params.setLatitude(latitude);
+            params.setLongitude(longitude);
+            params.setRadius(radius);
+            params.setDwellTimeMillis(dwell);
+            this.method = LocationMethod.LOCATION_IN;
+            return this;
+        }
+        @Override
+        public Fence build() {
+            return new LocationFence(name, method, action, params.build());
+        }
+    }
 }

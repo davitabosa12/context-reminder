@@ -10,7 +10,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.UUID;
+
 import br.ufc.great.contextreminder.model.Reminder;
+import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
+import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
+import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
+import br.ufc.great.contextreminder.model.trigger.Trigger;
 import smd.ufc.br.easycontext.fence.AggregateFence;
 import smd.ufc.br.easycontext.fence.DetectedActivityFence;
 import smd.ufc.br.easycontext.fence.Fence;
@@ -73,17 +82,109 @@ public class CreateReminderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_CREATE:
-                Provider provider = (Provider) data.getSerializableExtra("provider");
+
+                rule = extractFrom(data);
                 showEdit();
                 updateButtonIcon();
                 break;
 
 
             case REQUEST_CODE_EDIT:
-                rule = (Fence) data.getSerializableExtra("fence");
+
                 updateButtonIcon();
                 break;
         }
+    }
+
+    private Fence extractFrom(Intent data) throws Exception {
+        Provider provider = (Provider) data.getSerializableExtra("provider");
+
+        switch (provider){
+            case LOCATION: {
+                LocationTrigger trigger = (LocationTrigger) data.getSerializableExtra("trigger");
+                LocationFence.Builder builder = new LocationFence.Builder();
+                builder.setName(UUID.randomUUID().toString());
+                builder.setAction(new NotificationAction());
+                double lat = data.getDoubleExtra("latitude", 0);
+                double lon = data.getDoubleExtra("longitude", 0);
+                double radius = data.getDoubleExtra("radius", 0);
+                switch (trigger) {
+                    case IN:
+                        long dwell = data.getLongExtra("dwell_time",0);
+                        builder.in(lat, lon, radius, dwell);
+                        break;
+                    case EXITING:
+                        builder.exiting(lat, lon, radius);
+                        break;
+                    case ENTERING:
+                        builder.entering(lat, lon, radius);
+                        break;
+                }
+                return builder.build();
+                break;
+            }
+            case HEADPHONE:
+
+                break;
+            case ACTIVITY: {
+                ActivityTrigger trigger = (ActivityTrigger) data.getSerializableExtra("trigger");
+                DetectedActivityFence.Builder builder = new DetectedActivityFence.Builder();
+                builder.setName(UUID.randomUUID().toString());
+                builder.setAction(new NotificationAction());
+                ArrayList<Integer> fromData;
+                fromData = data.getIntegerArrayListExtra("activities");
+                int[] activities = new int[fromData.size()];
+                int counter = 0;
+                for(Integer i : fromData){
+                    activities[counter++] = i;
+                }
+
+
+                switch(trigger){
+                    case STARTING:
+                        builder.starting(activities);
+                        break;
+                    case STOPPING:
+                        builder.stopping(activities);
+                        break;
+                    case DURING:
+                        builder.during(activities);
+                        break;
+                }
+                return builder.build();
+                break;
+            }
+            case TIME:{
+                TimeTrigger trigger = (TimeTrigger) data.getSerializableExtra("trigger");
+                TimeFence.Builder builder = new TimeFence.Builder();
+                int hour = data.getIntExtra("hour", 0);
+                int minute = data.getIntExtra("minute", 0);
+
+                builder.setName(UUID.randomUUID().toString());
+                builder.setAction(new NotificationAction());
+                switch(trigger){
+                    case EVERY_DAY_OF_THE_WEEK_AT:
+                        //TODO: THE GREAT REFACTOR EASYCONTEXT
+                        builder.inIntervalOfDay()
+                        break;
+                    case EVERY_MONTH_ON_THE:
+                        throw new Exception("lol no");
+                        break;
+                    case EVERY_HOUR_AT:
+                        throw new Exception("lol no");
+                        break;
+                    case EVERY_DAY_AT:
+                        long calc = hour * 3600 * 1000 + minute * 60 * 1000;
+                        long end = 15*60*1000; //15 minutes
+                        builder.inDailyInterval(null, calc, calc+ end);
+                        break;
+
+                }
+            }
+
+                break;
+        }
+        return null;
     }
 
     private void updateButtonIcon() {

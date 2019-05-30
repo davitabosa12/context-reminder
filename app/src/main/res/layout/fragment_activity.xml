@@ -5,25 +5,17 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ActivityFragment">
+    tools:context=".fragment.ActivityFragment"
+    tools:layout_editor_absoluteY="81dp">
 
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="CheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="183dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginEnd="8dp"
         android:text="Complete trigger"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +24,89 @@
 
     <TextView
         android:id="@+id/txv_description"
-        android:layout_width="0dp"
+        android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/activity_during_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <CheckBox
+        android:id="@+id/cb_vehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="In Vehicle"
+        app:layout_constraintEnd_toEndOf="@+id/txv_description"
+        app:layout_constraintStart_toStartOf="@+id/txv_description"
+        app:layout_constraintTop_toBottomOf="@+id/txv_description" />
+
+    <CheckBox
+        android:id="@+id/cb_bicycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="On Bicycle"
+        app:layout_constraintStart_toStartOf="@+id/cb_vehicle"
+        app:layout_constraintTop_toBottomOf="@+id/cb_vehicle" />
+
+    <CheckBox
+        android:id="@+id/cb_foot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="On Foot"
+        app:layout_constraintStart_toStartOf="@+id/cb_bicycle"
+        app:layout_constraintTop_toBottomOf="@+id/cb_bicycle" />
+
+    <CheckBox
+        android:id="@+id/cb_running"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Running"
+        app:layout_constraintStart_toStartOf="@+id/cb_foot"
+        app:layout_constraintTop_toBottomOf="@+id/cb_foot" />
+
+    <CheckBox
+        android:id="@+id/cb_still"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="Still"
+        app:layout_constraintStart_toStartOf="@+id/cb_running"
+        app:layout_constraintTop_toBottomOf="@+id/cb_running" />
+
+    <CheckBox
+        android:id="@+id/cb_walking"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Walking"
+        app:layout_constraintStart_toStartOf="@+id/cb_still"
+        app:layout_constraintTop_toBottomOf="@+id/cb_still" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="OK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
