@@ -1,14 +1,10 @@
 package smd.ufc.br.easycontext.fence;
 
-import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-import smd.ufc.br.easycontext.fence.method.FenceMethod;
-import smd.ufc.br.easycontext.fence.parameter.FenceParameter;
-import smd.ufc.br.easycontext.fence.type.FenceType;
-
-public final class Fence implements Serializable {
+public final class Fence implements Serializable, JsonSerializer {
     private String name;
     private Rule rule;
     private FenceAction action;
@@ -42,5 +38,10 @@ public final class Fence implements Serializable {
 
     public void setAction(FenceAction action) {
         this.action = action;
+    }
+
+    @Override
+    public String serialize() {
+        return new Gson().toJson(this);
     }
 }

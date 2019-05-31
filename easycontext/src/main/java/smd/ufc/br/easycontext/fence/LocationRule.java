@@ -26,31 +26,31 @@ public class LocationRule implements Rule{
 
     }
 
-    public LocationRule entering(double latitude, double longitude, double radius){
+    public static LocationRule entering(double latitude, double longitude, double radius){
         LocationRule locationRule = new LocationRule();
         locationRule.setLatitude(latitude);
         locationRule.setLongitude(longitude);
         locationRule.setRadius(radius);
-        this.method = LocationMethod.LOCATION_ENTERING;
-        return this;
+        locationRule.method = LocationMethod.LOCATION_ENTERING;
+        return locationRule;
     }
-    public LocationRule exiting(double latitude, double longitude, double radius){
+    public static LocationRule exiting(double latitude, double longitude, double radius){
         LocationRule locationRule = new LocationRule();
         locationRule.setLatitude(latitude);
         locationRule.setLongitude(longitude);
         locationRule.setRadius(radius);
-        this.method = LocationMethod.LOCATION_EXITING;
-        return this;
+        locationRule.method = LocationMethod.LOCATION_EXITING;
+        return locationRule;
 
     }
-    public LocationRule in(double latitude, double longitude, double radius, long dwell){
+    public static LocationRule in(double latitude, double longitude, double radius, long dwell){
         LocationRule locationRule = new LocationRule();
         locationRule.setLatitude(latitude);
         locationRule.setLongitude(longitude);
         locationRule.setRadius(radius);
         locationRule.setDwellTimeMillis(dwell);
-        this.method = LocationMethod.LOCATION_IN;
-        return this;
+        locationRule.method = LocationMethod.LOCATION_IN;
+        return locationRule;
     }
 
     @SuppressLint("MissingPermission")

@@ -112,7 +112,7 @@ LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected
             case TIME:
                 return Provider.TIME;
                 default:
-                    throw new RuntimeException("Extract fence rule failed, not location, headphone, activity or time");
+                    throw new RuntimeException("Extract fence fence failed, not location, headphone, activity or time");
         }
 
 

@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
 import smd.ufc.br.easycontext.fence.Fence;
 import smd.ufc.br.easycontext.fence.FenceAction;
 import smd.ufc.br.easycontext.fence.FenceManager;
-
+/*
 public class Configurator {
     private Activity activity;
     private Service service;
@@ -65,7 +65,7 @@ public class Configurator {
      * Getter for the Activity which this Configurator is bound to
      *
      * @return null if it's bound by a service, otherwise the bound activity
-     */
+     *//*
     public Activity getActivity() {
         return activity;
     }
@@ -74,7 +74,7 @@ public class Configurator {
      * Getter for the Service which this Configurator is bound to
      *
      * @return null if it's bound to an activity, otherwise the bound service
-     */
+     *//*
     public Service getService() {
         return service;
     }
@@ -141,4 +141,4 @@ public class Configurator {
 
         });
     }
-}
+}*/

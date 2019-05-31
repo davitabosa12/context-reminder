@@ -1,5 +1,7 @@
 package smd.ufc.br.easycontext.fence;
 
+import android.os.Parcel;
+
 import com.google.android.gms.awareness.fence.AwarenessFence;
 
 import java.util.ArrayList;
@@ -32,6 +34,12 @@ public class AggregateRule implements Rule {
         AggregateRule aggregateFence = new AggregateRule();
         aggregateFence.method = AggregateMethod.AGGREGATE_OR;
         aggregateFence.rules = Arrays.asList(rules);
+        return aggregateFence;
+    }
+    public static AggregateRule or(List<Rule> rules){
+        AggregateRule aggregateFence = new AggregateRule();
+        aggregateFence.method = AggregateMethod.AGGREGATE_OR;
+        aggregateFence.rules = rules;
         return aggregateFence;
     }
     public static AggregateRule not(Rule rule){

@@ -77,18 +77,18 @@ public class TimeRule implements Rule{
         return timeRule;
     }
 
-    public TimeRule inIntervalOfDay(int dayOfWeek, TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis){
+    public static TimeRule inIntervalOfDay(int dayOfWeek, TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis){
         TimeRule timeRule =  new TimeRule();
         timeRule.dayOfWeek = dayOfWeek;
         timeRule.timeZone = timeZone;
         timeRule.startTimeOfDayMillis = startTimeOfDayMillis;
         timeRule.stopTimeOfDayMillis = stopTimeOfDayMillis;
         timeRule.method = TimeMethod.IN_INTERVAL_OF_DAY;
-        return this;
+        return timeRule;
     }
 
 
-    public TimeRule inTimeInterval(int timeInterval){
+    public static TimeRule inTimeInterval(int timeInterval){
         TimeRule timeRule =  new TimeRule();
         timeRule.timeInterval = timeInterval;
         timeRule.method = TimeMethod.IN_TIME_INTERVAL;

@@ -30,7 +30,8 @@ import smd.ufc.br.easycontext.fence.type.FenceType;
 /**
  * Created by davitabosa on 08/08/2018.
  */
-
+//TODO: Refactor this
+    /*
 public class JSONParser {
     private static final String TAG = "JSONParser";
 
@@ -64,10 +65,6 @@ public class JSONParser {
         Log.d(TAG, "readJSON: " + activities.toString());
         return activities;
 
-
-
-        /*Fence headphoneFence = new Fence("headphoneFence",FenceType.HEADPHONE, new MyCustomAction());
-        fences.add(headphoneFence);*/
     }
     //TODO: Criar parser externo
     private ArrayList<AwarenessActivity> parseActivitiesList(JsonReader jsonReader) throws IOException {
@@ -161,14 +158,7 @@ public class JSONParser {
                     Log.d(TAG, "parseFence: parsed method: " + fenceMethod);
                     break;
                 case "fenceType":
-                    /*
-                    String type = jsonReader.nextString();
-                    try{
-                        fenceType = FenceType.valueOf(type);
-                    } catch (IllegalArgumentException e){
-                        Log.e("AwarenessLib", "FenceType not supported: " + type);
-                        e.printStackTrace();
-                    }*/
+
                     //IGNORE AND GET THE NUMBER
                     jsonReader.nextString();
                     break;
@@ -285,4 +275,4 @@ public class JSONParser {
         return builder.setLatitude(latitude).setLongitude(longitude).setRadius(radius).setDwellTimeMillis(dwellTimeMillis).build();
     }
 
-}
+}*/
