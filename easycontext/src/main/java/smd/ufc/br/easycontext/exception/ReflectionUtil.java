@@ -2,8 +2,6 @@ package smd.ufc.br.easycontext.exception;
 
 import java.lang.reflect.Method;
 
-import smd.ufc.br.easycontext.fence.AggregateFence;
-
 public class ReflectionUtil {
 
     public static String getMethodsFromClass(Class klass){

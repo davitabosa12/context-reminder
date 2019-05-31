@@ -13,11 +13,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import smd.ufc.br.easycontext.fence.DetectedActivityFence;
+import smd.ufc.br.easycontext.fence.DetectedActivityRule;
 import smd.ufc.br.easycontext.fence.Fence;
 import smd.ufc.br.easycontext.fence.FenceAction;
-import smd.ufc.br.easycontext.fence.HeadphoneFence;
-import smd.ufc.br.easycontext.fence.LocationFence;
+import smd.ufc.br.easycontext.fence.HeadphoneRule;
+import smd.ufc.br.easycontext.fence.LocationRule;
 import smd.ufc.br.easycontext.fence.method.DAMethod;
 import smd.ufc.br.easycontext.fence.method.HeadphoneMethod;
 import smd.ufc.br.easycontext.fence.method.LocationMethod;
@@ -199,13 +199,13 @@ public class JSONParser {
         switch(fenceType){
             case DETECTED_ACTIVITY:
                 Log.d(TAG, "parseFence: returning DetectedActivity");
-                return new DetectedActivityFence(fenceName,DAMethod.valueFor(fenceMethod),action,(DetectedActivityParameter)params);
+                return new DetectedActivityRule(fenceName,DAMethod.valueFor(fenceMethod),action,(DetectedActivityParameter)params);
             case LOCATION:
                 Log.d(TAG, "parseFence: returning Location");
-                return new LocationFence(fenceName,LocationMethod.valueFor(fenceMethod),action,(LocationParameter)params);
+                return new LocationRule(fenceName,LocationMethod.valueFor(fenceMethod),action,(LocationParameter)params);
             case HEADPHONE:
                 Log.d(TAG, "parseFence: returning Headphone");
-                return new HeadphoneFence(fenceName,HeadphoneMethod.valueFor(fenceMethod),action,(HeadphoneParameter)params);
+                return new HeadphoneRule(fenceName,HeadphoneMethod.valueFor(fenceMethod),action,(HeadphoneParameter)params);
             default:
                 return null;
         }

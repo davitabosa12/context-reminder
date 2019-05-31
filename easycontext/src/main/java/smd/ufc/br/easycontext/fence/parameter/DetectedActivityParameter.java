@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import smd.ufc.br.easycontext.fence.DetectedActivityFence;
+import smd.ufc.br.easycontext.fence.DetectedActivityRule;
 
 /**
  * Created by davitabosa on 18/06/2018.
@@ -40,19 +40,19 @@ public class DetectedActivityParameter implements FenceParameter {
 
         public Builder addActivityType(String activityName){
             if(activityName.equals("IN_VEHICLE")){
-                activityTypeList.add(DetectedActivityFence.IN_VEHICLE);
+                activityTypeList.add(DetectedActivityRule.IN_VEHICLE);
             } else if(activityName.equals("RUNNING")){
-                activityTypeList.add(DetectedActivityFence.RUNNING);
+                activityTypeList.add(DetectedActivityRule.RUNNING);
             } else if(activityName.equals("ON_FOOT")){
-                activityTypeList.add(DetectedActivityFence.ON_FOOT);
+                activityTypeList.add(DetectedActivityRule.ON_FOOT);
             } else if(activityName.equals("ON_BICYCLE")){
-                activityTypeList.add(DetectedActivityFence.ON_BICYCLE);
+                activityTypeList.add(DetectedActivityRule.ON_BICYCLE);
             } else if(activityName.equals("STILL")){
-                activityTypeList.add(DetectedActivityFence.STILL);
+                activityTypeList.add(DetectedActivityRule.STILL);
             } else if(activityName.equals("WALKING")){
-                activityTypeList.add(DetectedActivityFence.WALKING);
+                activityTypeList.add(DetectedActivityRule.WALKING);
             } else if(activityName.equals("UNKNOWN")){
-                activityTypeList.add(DetectedActivityFence.UNKNOWN);
+                activityTypeList.add(DetectedActivityRule.UNKNOWN);
             }
             return this;
         }

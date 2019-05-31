@@ -8,160 +8,39 @@ import smd.ufc.br.easycontext.fence.method.FenceMethod;
 import smd.ufc.br.easycontext.fence.parameter.FenceParameter;
 import smd.ufc.br.easycontext.fence.type.FenceType;
 
-public abstract class Fence implements Serializable {
+public final class Fence implements Serializable {
     private String name;
-    private FenceType type;
-    private FenceMethod method;
+    private Rule rule;
     private FenceAction action;
-    private FenceParameter params;
 
-    Fence(String name, FenceType type, FenceAction action, FenceParameter params){
+    public Fence(String name, Rule rule, FenceAction action){
 		this.name = name;
-		this.type = type;
+		this.rule = rule;
 		this.action = action;
-
-		/*switch (type){
-                case HEADPHONE:
-                    if(!(params instanceof HeadphoneParameter))
-                        throw new IllegalArgumentException("Fence parameters of different types, expected a HeadphoneParameter, got " +
-                                params.getClass().getSimpleName());
-                    break;
-                case LOCATION:
-
-                    if(!(params instanceof LocationParameter))
-                        throw new IllegalArgumentException("Fence parameters of different types, expected a LocationParameter, got " +
-                                params.getClass().getSimpleName());
-                    break;
-                case DETECTED_ACTIVITY:
-
-                    if(!(params instanceof DetectedActivityParameter))
-                        throw new IllegalArgumentException("Fence parameters of different types, expected a DetectedActivityParameter, got " +
-                                params.getClass().getSimpleName());
-                    break;
-                default:
-                    break;
-        }*/
-        //TODO: validar methods
-        this.params = params;
-        //this.method = method;
-        if(!validateMethods()){
-            throw new IllegalArgumentException("Params of different methods.");
-        }
 	}
 
-    private boolean validateMethods(){
-        return true;
+
+    public String getName() {
+        return name;
     }
 
-    public Fence setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
-    public FenceType getType() {
-        return type;
+    public Rule getRule() {
+        return rule;
     }
 
-    public Fence setType(FenceType type) {
-        this.type = type;
-        return this;
-    }
-
-    public abstract void setMethod(FenceMethod method);
-
-    public Fence setAction(FenceAction action) {
-        this.action = action;
-        return this;
-    }
-
-    public FenceParameter getParams() {
-        return params;
+    public void setRule(Rule rule) {
+        this.rule = rule;
     }
 
     public FenceAction getAction() {
-		return action;
-	}
-
-    public abstract void setParams(FenceParameter params);
-
-
-	//@SuppressLint("MissingPermission")
-    public abstract AwarenessFence getMethod();
-    public abstract FenceMethod getMethodName();
-    /*public AwarenessFence getMethod() {
-        DetectedActivityParameter daParams;
-        LocationParameter locParams;
-        HeadphoneParameter hParams;
-		switch (method){
-            case DA_DURING:
-                int[] types;
-            {
-                    daParams = (DetectedActivityParameter) params;
-                    types = new int[daParams.getActivityTypeList().size()];
-                    for (int i = 0; i < daParams.getActivityTypeList().size(); i++) {
-                        types[i] = daParams.getActivityTypeList().get(i);
-                    }
-                }
-                return DetectedActivityFence.during(types);
-            case DA_STARTING:
-                {
-                    daParams = (DetectedActivityParameter) params;
-                    types = new int[daParams.getActivityTypeList().size()];
-                    for (int i = 0; i < daParams.getActivityTypeList().size(); i++) {
-                        types[i] = daParams.getActivityTypeList().get(i);
-                    }
-                }
-                return DetectedActivityFence.starting(types);
-            case DA_STOPPING:
-                {
-                    daParams = (DetectedActivityParameter) params;
-                    types = new int[daParams.getActivityTypeList().size()];
-                    for (int i = 0; i < daParams.getActivityTypeList().size(); i++) {
-                        types[i] = daParams.getActivityTypeList().get(i);
-                    }
-                }
-                return DetectedActivityFence.stopping(types);
-            case LOCATION_IN:
-                locParams = (LocationParameter) params;
-                return LocationFence.in(locParams.getLatitude(),locParams.getLongitude(),
-                        locParams.getRadius(),locParams.getDwellTimeMillis());
-            case LOCATION_EXITING:
-                locParams = (LocationParameter) params;
-                return LocationFence.exiting(locParams.getLatitude(),locParams.getLongitude(),locParams.getRadius());
-            case LOCATION_ENTERING:
-                locParams = (LocationParameter) params;
-                return LocationFence.entering(locParams.getLatitude(),locParams.getLongitude(),locParams.getRadius());
-            case HEADPHONE_DURING:
-                hParams = (HeadphoneParameter) params;
-                return HeadphoneFence.during(hParams.getHeadphoneState());
-            case HEADPHONE_UNPLUGGING:
-                return HeadphoneFence.unplugging();
-            case HEADPHONE_PLUGGING_IN:
-                return HeadphoneFence.pluggingIn();
-            default:
-                throw new UnsupportedOperationException("Not supported yet.");
-        }
-	}
-*/
-	public String getName() {
-		return name;
-	}
-
-	public abstract static class Builder{
-	    protected FenceAction action;
-	    protected String name;
-        public Builder setAction(FenceAction action){
-            this.action = action;
-            return this;
-        }
-
-        public Builder setName(String name){
-            this.name = name;
-            return this;
-        }
-
-        public abstract Fence build();
-
+        return action;
     }
 
+    public void setAction(FenceAction action) {
+        this.action = action;
+    }
 }

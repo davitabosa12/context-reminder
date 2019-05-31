@@ -1,7 +1,6 @@
 package br.ufc.great.contextreminder;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,21 +10,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.UUID;
 
 import br.ufc.great.contextreminder.model.Reminder;
 import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
 import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
-import br.ufc.great.contextreminder.model.trigger.Trigger;
-import smd.ufc.br.easycontext.fence.AggregateFence;
-import smd.ufc.br.easycontext.fence.DetectedActivityFence;
+import smd.ufc.br.easycontext.fence.AggregateRule;
+import smd.ufc.br.easycontext.fence.DetectedActivityRule;
 import smd.ufc.br.easycontext.fence.Fence;
-import smd.ufc.br.easycontext.fence.HeadphoneFence;
-import smd.ufc.br.easycontext.fence.LocationFence;
-import smd.ufc.br.easycontext.fence.TimeFence;
+import smd.ufc.br.easycontext.fence.HeadphoneRule;
+import smd.ufc.br.easycontext.fence.LocationRule;
+import smd.ufc.br.easycontext.fence.TimeRule;
 
 
 public class CreateReminderActivity extends AppCompatActivity {
@@ -102,7 +98,7 @@ public class CreateReminderActivity extends AppCompatActivity {
         switch (provider){
             case LOCATION: {
                 LocationTrigger trigger = (LocationTrigger) data.getSerializableExtra("trigger");
-                LocationFence.Builder builder = new LocationFence.Builder();
+                LocationRule.Builder builder = new LocationRule.Builder();
                 builder.setName(UUID.randomUUID().toString());
                 builder.setAction(new NotificationAction());
                 double lat = data.getDoubleExtra("latitude", 0);
@@ -128,7 +124,7 @@ public class CreateReminderActivity extends AppCompatActivity {
                 break;
             case ACTIVITY: {
                 ActivityTrigger trigger = (ActivityTrigger) data.getSerializableExtra("trigger");
-                DetectedActivityFence.Builder builder = new DetectedActivityFence.Builder();
+                DetectedActivityRule.Builder builder = new DetectedActivityRule.Builder();
                 builder.setName(UUID.randomUUID().toString());
                 builder.setAction(new NotificationAction());
                 ArrayList<Integer> fromData;
@@ -154,18 +150,26 @@ public class CreateReminderActivity extends AppCompatActivity {
                 return builder.build();
                 break;
             }
-            case TIME:{
+            case TIME: {
                 TimeTrigger trigger = (TimeTrigger) data.getSerializableExtra("trigger");
-                TimeFence.Builder builder = new TimeFence.Builder();
+                TimeRule.Builder builder = new TimeRule.Builder();
                 int hour = data.getIntExtra("hour", 0);
                 int minute = data.getIntExtra("minute", 0);
 
                 builder.setName(UUID.randomUUID().toString());
                 builder.setAction(new NotificationAction());
-                switch(trigger){
+                switch (trigger) {
                     case EVERY_DAY_OF_THE_WEEK_AT:
                         //TODO: THE GREAT REFACTOR EASYCONTEXT
-                        builder.inIntervalOfDay()
+
+                        boolean[] daysOfWeek = data.getBooleanArrayExtra("daysOfWeek");
+                        for (boolean b : daysOfWeek) {
+                            if (b) {
+                                AggregateRule.Builder aggregate = new AggregateRule.Builder();
+                                aggregate.
+                            }
+                        }
+
                         break;
                     case EVERY_MONTH_ON_THE:
                         throw new Exception("lol no");
@@ -175,29 +179,28 @@ public class CreateReminderActivity extends AppCompatActivity {
                         break;
                     case EVERY_DAY_AT:
                         long calc = hour * 3600 * 1000 + minute * 60 * 1000;
-                        long end = 15*60*1000; //15 minutes
-                        builder.inDailyInterval(null, calc, calc+ end);
+                        long end = 15 * 60 * 1000; //15 minutes
+                        builder.inDailyInterval(null, calc, calc + end);
                         break;
 
                 }
+                return builder.build();
             }
-
-                break;
         }
         return null;
     }
 
     private void updateButtonIcon() {
-        if(rule instanceof HeadphoneFence){
+        if(rule instanceof HeadphoneRule){
 
             btnEditContext.setImageResource(R.drawable.ic_headset_gray_24dp);
-        } else if(rule instanceof LocationFence){
+        } else if(rule instanceof LocationRule){
             btnEditContext.setImageResource(R.drawable.ic_gps_fixed_gray_24dp);
-        } else if(rule instanceof DetectedActivityFence){
+        } else if(rule instanceof DetectedActivityRule){
             btnEditContext.setImageResource(R.drawable.ic_activity_gray_24dp);
-        } else if(rule instanceof TimeFence){
+        } else if(rule instanceof TimeRule){
             btnEditContext.setImageResource(R.drawable.ic_access_time_black_24dp);
-        } else if(rule instanceof AggregateFence){
+        } else if(rule instanceof AggregateRule){
             btnEditContext.setImageResource(R.drawable.ic_compound_gray_24dp);
         }
     }

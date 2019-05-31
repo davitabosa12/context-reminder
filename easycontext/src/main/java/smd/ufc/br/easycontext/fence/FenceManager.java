@@ -81,7 +81,7 @@ public class FenceManager {
 
             final String fenceName = fence.getName();
 
-            Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(),fence.getMethod(),pi).build());
+            Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(),fence.getAwarenessFence(),pi).build());
             return t;
         }
 
@@ -95,7 +95,7 @@ public class FenceManager {
         //pending intent to trigger GeneralReceiver
         PendingIntent pi = PendingIntent.getBroadcast(context, new Random().nextInt(), i , PendingIntent.FLAG_CANCEL_CURRENT);
         //register info to Awareness API
-        Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(), fence.getMethod(), pi).build());
+        Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(), fence.getAwarenessFence(), pi).build());
         return t;
     }
 

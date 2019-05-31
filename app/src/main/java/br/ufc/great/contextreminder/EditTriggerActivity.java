@@ -1,7 +1,6 @@
 package br.ufc.great.contextreminder;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,7 +19,7 @@ import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 import br.ufc.great.contextreminder.model.trigger.Trigger;
 import smd.ufc.br.easycontext.fence.Fence;
-import smd.ufc.br.easycontext.fence.HeadphoneFence;
+import smd.ufc.br.easycontext.fence.HeadphoneRule;
 import smd.ufc.br.easycontext.fence.type.FenceType;
 
 public class EditTriggerActivity extends AppCompatActivity implements TimeFragment.OnTimeRuleSelected,
@@ -73,7 +72,7 @@ LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected
                 ft.replace(R.id.frame, fragment);
                 break;
             case HEADPHONE:
-                HeadphoneFence.Builder builder = new HeadphoneFence.Builder();
+                HeadphoneRule.Builder builder = new HeadphoneRule.Builder();
                 //just return the fence...
                 if(method.equalsIgnoreCase("plugging in"))
                     builder.pluggingIn();

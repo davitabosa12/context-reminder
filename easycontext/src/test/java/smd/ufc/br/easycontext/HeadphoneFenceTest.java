@@ -2,12 +2,12 @@ package smd.ufc.br.easycontext;
 
 import org.junit.Test;
 
-import smd.ufc.br.easycontext.fence.HeadphoneFence;
+import smd.ufc.br.easycontext.fence.HeadphoneRule;
 
 public class HeadphoneFenceTest {
     @Test(expected = Exception.class)
     public void testBuildNull(){
-        HeadphoneFence.Builder builder = new HeadphoneFence.Builder();
+        HeadphoneRule.Builder builder = new HeadphoneRule.Builder();
         builder.build();
     }
 }
