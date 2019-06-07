@@ -1,6 +1,8 @@
 package smd.ufc.br.easycontext.fence;
 
 import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,31 @@ public class DetectedActivityRule implements Rule {
         return rule;
     }
 
+    public static DetectedActivityRule during(List<Integer> activityTypes){
+        DetectedActivityRule rule = new DetectedActivityRule();
+        rule.method = DAMethod.DA_DURING;
+        for(int i = 0; i < activityTypes.size(); i++){
+            rule.addActivityType(activityTypes.get(i));
+        }
+        return rule;
+    }
+    public static DetectedActivityRule starting(List<Integer> activityTypes){
+        DetectedActivityRule rule = new DetectedActivityRule();
+        rule.method = DAMethod.DA_STARTING;
+        for(int i = 0; i < activityTypes.size(); i++){
+            rule.addActivityType(activityTypes.get(i));
+        }
+        return rule;
+    }
+    public static DetectedActivityRule stopping(List<Integer> activityTypes){
+        DetectedActivityRule rule = new DetectedActivityRule();
+        rule.method = DAMethod.DA_STOPPING;
+        for(int i = 0; i < activityTypes.size(); i++){
+            rule.addActivityType(activityTypes.get(i));
+        }
+        return rule;
+    }
+
     @Override
     public AwarenessFence getAwarenessFence() {
         int size = activityTypes.size();
@@ -84,4 +111,17 @@ public class DetectedActivityRule implements Rule {
         }
     }
 
+
+    @Override
+    public String toString() {
+        JsonObject rule = new JsonObject();
+        rule.addProperty("type", "DetectedActivity");
+        rule.addProperty("method", String.valueOf(method));
+        JsonArray activityTypes = new JsonArray();
+        for(Integer type : this.activityTypes){
+            activityTypes.add(type);
+        }
+        rule.add("activityTypes", activityTypes);
+        return rule.toString();
+    }
 }

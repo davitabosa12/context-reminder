@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 
 import com.google.android.gms.awareness.fence.AwarenessFence;
 import com.google.android.gms.awareness.fence.TimeFence;
+import com.google.gson.JsonObject;
 
 import java.util.TimeZone;
 
+import smd.ufc.br.easycontext.fence.method.DAMethod;
 import smd.ufc.br.easycontext.fence.method.TimeMethod;
 import smd.ufc.br.easycontext.fence.parameter.FenceParameter;
 import smd.ufc.br.easycontext.fence.parameter.TimeParameter;
@@ -95,4 +97,26 @@ public class TimeRule implements Rule{
         return timeRule;
     }
 
+    @Override
+    public String toString() {
+        JsonObject rule = new JsonObject();
+        rule.addProperty("type", "TimeIntervals");
+        rule.addProperty("method", String.valueOf(method));
+        if (timeZone != null) {
+            rule.addProperty("timeZone", timeZone.getID());
+        } else {
+            rule.addProperty("timeZone", TimeZone.getDefault().getID());
+        }
+
+        rule.addProperty("dayOfWeek", dayOfWeek);
+        rule.addProperty("timeInterval", timeInterval);
+        rule.addProperty("timeInstant", timeInstant);
+        rule.addProperty("startOffsetMillis", startOffsetMillis);
+        rule.addProperty("stopOffsetMillis", stopOffsetMillis);
+        rule.addProperty("startTimeOfDayMillis", startTimeOfDayMillis);
+        rule.addProperty("stopTimeOfDayMillis", stopTimeOfDayMillis);
+        rule.addProperty("startTimeMillis", startTimeMillis);
+        rule.addProperty("stopTimeMillis", stopTimeMillis);
+        return rule.toString();
+    }
 }

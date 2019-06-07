@@ -115,7 +115,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener {
                     radius = Double.parseDouble(edtRadius.getText().toString());
 
                 } catch (Exception e){
-                    Log.e("TimeFragment", "onClick: not a number provider", e);
+                    Log.e("LocationFragment", "onClick: not a number provider", e);
                 }
                 try{
 
@@ -131,11 +131,13 @@ public class LocationFragment extends Fragment implements View.OnClickListener {
                 location.putDouble("radius", radius);
                 location.putLong("dwell_time", dwell);
                 mListener.onLocationRuleSelected(location);
+                getActivity().finish();
                 break;
             case R.id.btn_cancel:
                 Bundle c = new Bundle();
                 c.putBoolean("cancel", true);
                 mListener.onLocationRuleSelected(c);
+                getActivity().finish();
                 break;
         }
     }

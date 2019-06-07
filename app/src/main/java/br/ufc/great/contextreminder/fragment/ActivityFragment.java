@@ -1,22 +1,17 @@
 package br.ufc.great.contextreminder.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import br.ufc.great.contextreminder.Provider;
@@ -77,6 +72,7 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
         activities.put((CheckBox) getActivity().findViewById(R.id.cb_running), 8);
         activities.put((CheckBox) getActivity().findViewById(R.id.cb_still), 3);
         activities.put((CheckBox) getActivity().findViewById(R.id.cb_walking), 7);
+
         ok = getActivity().findViewById(R.id.btn_ok);
         cancel = getActivity().findViewById(R.id.btn_cancel);
 
@@ -117,11 +113,13 @@ public class ActivityFragment extends Fragment implements View.OnClickListener {
                 }
                 activity.putIntegerArrayList("activities", activitySelected);
                 mListener.onActivityRuleSelected(activity);
+                getActivity().finish();
                 break;
             case R.id.btn_cancel:
                 Bundle c = new Bundle();
                 c.putBoolean("cancel", true);
                 mListener.onActivityRuleSelected(c);
+                getActivity().finish();
                 break;
         }
     }

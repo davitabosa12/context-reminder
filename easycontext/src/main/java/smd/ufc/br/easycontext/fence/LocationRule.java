@@ -3,6 +3,8 @@ package smd.ufc.br.easycontext.fence;
 import android.annotation.SuppressLint;
 
 import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import smd.ufc.br.easycontext.fence.method.FenceMethod;
 import smd.ufc.br.easycontext.fence.parameter.FenceParameter;
@@ -98,4 +100,17 @@ public class LocationRule implements Rule{
         this.dwellTimeMillis = dwellTimeMillis;
     }
 
+    @Override
+    public String toString() {
+        JsonObject rule = new JsonObject();
+        rule.addProperty("type", "Location");
+        rule.addProperty("method", String.valueOf(method));
+
+        rule.addProperty("latitude", latitude);
+        rule.addProperty("longitude", longitude);
+        rule.addProperty("radius", radius);
+        rule.addProperty("dwellTimeMillis", dwellTimeMillis);
+
+        return rule.toString();
+    }
 }

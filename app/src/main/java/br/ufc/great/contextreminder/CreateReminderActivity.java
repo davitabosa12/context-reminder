@@ -31,6 +31,7 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_CREATE = 193;
     public static final int REQUEST_CODE_EDIT = 15478;
+    private static final String TAG = "CreateReminderActivity";
     Reminder reminder;
     Fence fence;
     Button btnCreateContext;
@@ -63,6 +64,14 @@ public class CreateReminderActivity extends AppCompatActivity {
         btnCreateContext.setVisibility(View.VISIBLE);
     }
 
+    public void ok(View v){
+
+    }
+
+    public void cancel(View v){
+
+    }
+
     public void create(View v) {
         startActivityForResult(new Intent(this, SelectContextActivity.class), REQUEST_CODE_CREATE);
     }
@@ -72,7 +81,7 @@ public class CreateReminderActivity extends AppCompatActivity {
             //error
         } else {
             Intent i = new Intent(this, EditTriggerActivity.class);
-
+            i.putExtra("fence", fence);
             startActivityForResult(i, REQUEST_CODE_EDIT);
         }
     }
@@ -195,6 +204,7 @@ public class CreateReminderActivity extends AppCompatActivity {
     }
 
     private void updateButtonIcon() {
+        Log.d(TAG, "updateButtonIcon: " + fence.toString());
         if(fence.getRule() instanceof HeadphoneRule){
 
             btnEditContext.setImageResource(R.drawable.ic_headset_gray_24dp);

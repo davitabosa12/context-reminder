@@ -8,4 +8,6 @@ import java.io.Serializable;
 
 public interface Rule extends Serializable {
     abstract AwarenessFence getAwarenessFence();
+
+
 }

@@ -3,6 +3,9 @@ package smd.ufc.br.easycontext.fence;
 import android.os.Parcel;
 
 import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,5 +70,22 @@ public class AggregateRule implements Rule {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public String toString() {
+
+        JsonObject rule = new JsonObject();
+        rule.addProperty("type", "Aggregate");
+        rule.addProperty("method", String.valueOf(method));
+
+        JsonArray jsonRules = new JsonArray();
+        for (Rule r :
+                rules) {
+            jsonRules.add(new Gson().fromJson(r.toString(), JsonObject.class));
+        }
+
+        rule.add("rules", jsonRules);
+        return rule.toString();
     }
 }
