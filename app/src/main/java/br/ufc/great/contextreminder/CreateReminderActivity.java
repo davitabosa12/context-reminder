@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.UUID;
 
 import br.ufc.great.contextreminder.model.Reminder;
 import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
+import br.ufc.great.contextreminder.model.trigger.HeadphoneTrigger;
 import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 import smd.ufc.br.easycontext.fence.AggregateRule;
@@ -37,6 +40,7 @@ public class CreateReminderActivity extends AppCompatActivity {
     Button btnCreateContext;
     ImageButton btnEditContext;
     TextView txvSelectedContext;
+    EditText edtReminderText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class CreateReminderActivity extends AppCompatActivity {
         btnCreateContext = findViewById(R.id.btn_create_context);
         btnEditContext = findViewById(R.id.btn_edit_context);
         txvSelectedContext = findViewById(R.id.txv_selected_context);
+        edtReminderText = findViewById(R.id.edt_text_reminder);
         hideEdit();
     }
 
@@ -65,11 +70,30 @@ public class CreateReminderActivity extends AppCompatActivity {
     }
 
     public void ok(View v){
+        String reminderText = edtReminderText.getText().toString();
+        if (fence == null) {
+            //user did not selected a fence...
+            Toast.makeText(this, "Please select a trigger", Toast.LENGTH_SHORT).show();
+        } else if(reminderText.isEmpty()){
+            Toast.makeText(this, "Text is empty", Toast.LENGTH_SHORT).show();
+        } else{
+            reminder = new Reminder.Builder()
+                    .setText(reminderText)
+                    .setRule(fence)
+                    .setRepeating(true)
+                    .build();
+            Log.d(TAG, "ok: reminder->" + reminder.toString());
+            Intent i = new Intent();
+            i.putExtra("reminder", reminder);
+            setResult(RESULT_OK, i);
+            finish();
 
+        }
     }
 
     public void cancel(View v){
-
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     public void create(View v) {
@@ -77,13 +101,15 @@ public class CreateReminderActivity extends AppCompatActivity {
     }
 
     public void edit(View v) {
-        if (fence == null) {
+        create(v);
+        return;
+        /*if (fence == null) {
             //error
         } else {
             Intent i = new Intent(this, EditTriggerActivity.class);
             i.putExtra("fence", fence);
             startActivityForResult(i, REQUEST_CODE_EDIT);
-        }
+        }*/
     }
 
     @Override
@@ -94,10 +120,10 @@ public class CreateReminderActivity extends AppCompatActivity {
                 try {
                     fence = extractFrom(data);
                 } catch (Exception e) {
-                    Log.e("CreateReminderActivity", "onActivityResult: bode", e);
+                    Log.e("CreateReminderActivity", "onActivityResult: DATA IS NULL", e);
                 }
                 if (fence == null) {
-                    Log.e("CreateReminderActivity", "onActivityResult: bode");
+                    Log.e("CreateReminderActivity", "onActivityResult: FENCE IS NULL");
                 } else {
 
                     showEdit();
@@ -114,6 +140,8 @@ public class CreateReminderActivity extends AppCompatActivity {
     }
 
     private Fence extractFrom(Intent data) throws Exception {
+        Bundle extras = data.getExtras();
+        Log.d(TAG, "extractFrom: " + extras.toString());
         Provider provider = (Provider) data.getSerializableExtra("provider");
 
         switch (provider){
@@ -141,9 +169,20 @@ public class CreateReminderActivity extends AppCompatActivity {
                 location = new Fence(name, locationRule, new NotificationAction());
                 return location;
             }
-            case HEADPHONE:
+            case HEADPHONE:{
 
-                break;
+                HeadphoneTrigger trigger = (HeadphoneTrigger) data.getSerializableExtra("trigger");
+                HeadphoneRule rule = null;
+                switch (trigger){
+                    case PLUGGING_IN:
+                        rule = HeadphoneRule.pluggingIn();
+                        break;
+                    case UNPLUGGING:
+                        rule = HeadphoneRule.unplugging();
+                        break;
+                }
+                return new Fence(UUID.randomUUID().toString(), rule, new NotificationAction());
+            }
             case ACTIVITY: {
                 ActivityTrigger trigger = (ActivityTrigger) data.getSerializableExtra("trigger");
                 DetectedActivityRule daRule = null;

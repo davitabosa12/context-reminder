@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 
-public final class Fence implements Serializable, JsonSerializer {
+public final class Fence implements Serializable {
     private String name;
     private Rule rule;
     private FenceAction action;
@@ -37,7 +37,7 @@ public final class Fence implements Serializable, JsonSerializer {
             Log.e("Fence", "fromJson: class" + klassName + " does not exist", e);
             e.printStackTrace();
         }
-        Rule r = RuleJsonParser.fromJson(object.getAsJsonPrimitive("rule").getAsString());
+        Rule r = RuleJsonParser.fromJson(object.get("rule").toString());
         return new Fence(name, r, action);
     }
 
@@ -64,18 +64,6 @@ public final class Fence implements Serializable, JsonSerializer {
 
     public void setAction(FenceAction action) {
         this.action = action;
-    }
-
-    @Override
-    public String serialize() {
-        Gson gson = new Gson();
-        JsonObject fence = new JsonObject();
-        fence.addProperty("name", name);
-        fence.addProperty("rule", rule.toString());
-        fence.addProperty("aswf","assssssss");
-        fence.addProperty("action", action.getClass().getCanonicalName());
-
-        return fence.toString();
     }
 
 

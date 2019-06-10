@@ -12,7 +12,7 @@ import smd.ufc.br.easycontext.fence.Fence;
 
 public class Reminder implements Serializable {
 
-    private long uid;
+    private String uid;
     private String text;
     private Fence fence;
     private boolean repeating;
@@ -20,7 +20,7 @@ public class Reminder implements Serializable {
     private Reminder() {
     }
 
-    public Reminder(long uid, String text, Fence fence, boolean repeating) {
+    public Reminder(String uid, String text, Fence fence, boolean repeating) {
         this.uid = uid;
         this.text = text;
         this.fence = fence;
@@ -29,10 +29,10 @@ public class Reminder implements Serializable {
 
     public static Reminder fromJson(String json) {
         JsonObject rem = new Gson().fromJson(json, JsonObject.class);
-        long uid = rem.getAsJsonPrimitive("uid").getAsLong();
-        String text = rem.getAsJsonPrimitive("text").getAsString();
-        Fence fence = Fence.fromJson(rem.getAsJsonPrimitive("fence").getAsString());
-        boolean repeating = rem.getAsJsonPrimitive("repeating").getAsBoolean();
+        String uid = rem.get("uid").getAsString();
+        String text = rem.get("text").getAsString();
+        Fence fence = Fence.fromJson(rem.get("fence").toString());
+        boolean repeating = rem.get("repeating").getAsBoolean();
         return new Reminder(uid,text,fence,repeating);
 
     }
@@ -46,11 +46,11 @@ public class Reminder implements Serializable {
         return this;
     }
 
-    public long getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -106,7 +106,7 @@ public class Reminder implements Serializable {
         }
 
         public Reminder build(){
-            reminder.setUid(UUID.randomUUID().timestamp());
+            reminder.setUid(UUID.randomUUID().toString());
             return reminder;
         }
 

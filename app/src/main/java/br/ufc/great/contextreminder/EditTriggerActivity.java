@@ -80,7 +80,9 @@ LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected
             case HEADPHONE:
                 //just return the fence...
                 Bundle b = new Bundle();
+                b.putSerializable("provider", Provider.HEADPHONE);
                 Trigger trigger = (Trigger) getIntent().getExtras().getSerializable("trigger");
+                b.putSerializable("trigger", trigger);
                 if(trigger == HeadphoneTrigger.PLUGGING_IN){
                     b.putSerializable("method", HeadphoneTrigger.PLUGGING_IN);
                 }
