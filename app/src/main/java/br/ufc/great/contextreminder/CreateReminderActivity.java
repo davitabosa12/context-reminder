@@ -239,6 +239,7 @@ public class CreateReminderActivity extends AppCompatActivity {
                 return new Fence(UUID.randomUUID().toString(), timeRule, new NotificationAction());
             }
         }
+
         return null;
     }
 

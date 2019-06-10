@@ -34,6 +34,12 @@ public class ReminderStorage {
         }
     }
 
+    public void delete(String id){
+        sharedPrefs.edit()
+                .remove(id)
+                .apply();
+    }
+
     public void saveReminder(Reminder reminder){
         sharedPrefs.edit()
                 .putString(String.valueOf(reminder.getUid()), reminder.toString())
