@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
+import br.ufc.great.contextreminder.model.trigger.HeadphoneTrigger;
 import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 import br.ufc.great.contextreminder.model.trigger.Trigger;
@@ -114,7 +115,13 @@ public class SelectMethodActivity extends AppCompatActivity implements AdapterVi
                 }
                 break;
             case HEADPHONE:
-                //do nothing
+                if(position == 0){
+                    //plugging in
+                    return HeadphoneTrigger.PLUGGING_IN;
+                }
+                else if (position == 1){
+                    return  HeadphoneTrigger.UNPLUGGING;
+                }
                 return null;
         }
         return null;

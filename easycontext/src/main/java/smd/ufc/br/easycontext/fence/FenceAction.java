@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import com.google.android.gms.awareness.fence.FenceState;
 
-public interface FenceAction {
+import java.io.Serializable;
+
+public interface FenceAction extends Serializable {
 
 	public void doOperation(Context context, FenceState state, Bundle data);
 

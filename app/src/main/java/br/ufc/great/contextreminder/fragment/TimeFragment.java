@@ -34,6 +34,8 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
     private String[] timeMethods;
     private Spinner spDaysOfMonth, spTimeMinutes;
     private int hourOfDay, minute;
+    TimePickerDialog dialog;
+
     public TimeFragment() {
         // Required empty public constructor
     }
@@ -55,7 +57,7 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         if (getArguments() != null) {
             this.trigger = (TimeTrigger) getArguments().getSerializable("trigger");
         } else {
-            throw new RuntimeException("A TimeTrigger was not provided. Always initialize with newInstance()");
+            //throw new RuntimeException("A TimeTrigger was not provided. Always initialize with newInstance()");
         }
     }
 
@@ -156,14 +158,22 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
         this.hourOfDay = hourOfDay;
         this.minute = minute;
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.edt_time:{
                 Calendar now = Calendar.getInstance();
 
-                TimePickerDialog dialog = new TimePickerDialog(getContext(), this, now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),true);
+                dialog = new TimePickerDialog(getContext(), this, now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),true);
+
                 dialog.show();
                 break;
             }
@@ -185,14 +195,17 @@ public class TimeFragment extends Fragment implements TimePickerDialog.OnTimeSet
                 t.putInt("days_month", daysMonth);
 
                 mListener.onTimeRuleSelected(t);
+                getActivity().finish();
                 break;
             }
             case R.id.btn_cancel:
                 Bundle t = new Bundle();
                 t.putBoolean("cancel", true);
                 mListener.onTimeRuleSelected(t);
+                getActivity().finish();
                 break;
         }
+
     }
 
     /**

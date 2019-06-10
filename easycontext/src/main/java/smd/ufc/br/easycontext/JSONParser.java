@@ -13,11 +13,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import smd.ufc.br.easycontext.fence.DetectedActivityFence;
+import smd.ufc.br.easycontext.fence.DetectedActivityRule;
 import smd.ufc.br.easycontext.fence.Fence;
 import smd.ufc.br.easycontext.fence.FenceAction;
-import smd.ufc.br.easycontext.fence.HeadphoneFence;
-import smd.ufc.br.easycontext.fence.LocationFence;
+import smd.ufc.br.easycontext.fence.HeadphoneRule;
+import smd.ufc.br.easycontext.fence.LocationRule;
 import smd.ufc.br.easycontext.fence.method.DAMethod;
 import smd.ufc.br.easycontext.fence.method.HeadphoneMethod;
 import smd.ufc.br.easycontext.fence.method.LocationMethod;
@@ -30,7 +30,8 @@ import smd.ufc.br.easycontext.fence.type.FenceType;
 /**
  * Created by davitabosa on 08/08/2018.
  */
-
+//TODO: Refactor this
+    /*
 public class JSONParser {
     private static final String TAG = "JSONParser";
 
@@ -64,10 +65,6 @@ public class JSONParser {
         Log.d(TAG, "readJSON: " + activities.toString());
         return activities;
 
-
-
-        /*Fence headphoneFence = new Fence("headphoneFence",FenceType.HEADPHONE, new MyCustomAction());
-        fences.add(headphoneFence);*/
     }
     //TODO: Criar parser externo
     private ArrayList<AwarenessActivity> parseActivitiesList(JsonReader jsonReader) throws IOException {
@@ -161,14 +158,7 @@ public class JSONParser {
                     Log.d(TAG, "parseFence: parsed method: " + fenceMethod);
                     break;
                 case "fenceType":
-                    /*
-                    String type = jsonReader.nextString();
-                    try{
-                        fenceType = FenceType.valueOf(type);
-                    } catch (IllegalArgumentException e){
-                        Log.e("AwarenessLib", "FenceType not supported: " + type);
-                        e.printStackTrace();
-                    }*/
+
                     //IGNORE AND GET THE NUMBER
                     jsonReader.nextString();
                     break;
@@ -199,13 +189,13 @@ public class JSONParser {
         switch(fenceType){
             case DETECTED_ACTIVITY:
                 Log.d(TAG, "parseFence: returning DetectedActivity");
-                return new DetectedActivityFence(fenceName,DAMethod.valueFor(fenceMethod),action,(DetectedActivityParameter)params);
+                return new DetectedActivityRule(fenceName,DAMethod.valueFor(fenceMethod),action,(DetectedActivityParameter)params);
             case LOCATION:
                 Log.d(TAG, "parseFence: returning Location");
-                return new LocationFence(fenceName,LocationMethod.valueFor(fenceMethod),action,(LocationParameter)params);
+                return new LocationRule(fenceName,LocationMethod.valueFor(fenceMethod),action,(LocationParameter)params);
             case HEADPHONE:
                 Log.d(TAG, "parseFence: returning Headphone");
-                return new HeadphoneFence(fenceName,HeadphoneMethod.valueFor(fenceMethod),action,(HeadphoneParameter)params);
+                return new HeadphoneRule(fenceName,HeadphoneMethod.valueFor(fenceMethod),action,(HeadphoneParameter)params);
             default:
                 return null;
         }
@@ -285,4 +275,4 @@ public class JSONParser {
         return builder.setLatitude(latitude).setLongitude(longitude).setRadius(radius).setDwellTimeMillis(dwellTimeMillis).build();
     }
 
-}
+}*/
