@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import br.ufc.great.contextreminder.model.Reminder;
 import br.ufc.great.contextreminder.model.ReminderStorage;
+import smd.ufc.br.easycontext.fence.Fence;
 import smd.ufc.br.easycontext.fence.FenceManager;
 
 public class MainActivity extends AppCompatActivity implements ReminderView.OnReminderDeletePressed {
@@ -31,11 +34,14 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     List<Reminder> reminderList;
     LinearLayout linearLayout;
     ReminderStorage storage;
+    RemindersCollection remindersTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        remindersTest = new RemindersCollection();
+
         storage = ReminderStorage.getInstance(this);
         reminderList = storage.getAll();
         linearLayout = findViewById(R.id.ll_scroll);
@@ -70,12 +76,83 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tests, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.item_test_5_single:
+                registerFiveSingleReminders();
+                break;
+            case R.id.item_test_5_compound:
+                registerFiveCompoundReminders();
+                break;
+            case R.id.item_test_10_single:
+                registerTenSingleReminders();
+                break;
+            case R.id.item_test_10_compound:
+                registerTenCompoundReminders();
+                break;
+        }
+        return true;
+    }
+
+    private void registerTenCompoundReminders() {
+        for(int i = 0; i < 10; i++){
+            Reminder r = remindersTest.compoundReminders.get(i);
+            registerReminder(r);
+            saveInStorage(r);
+            registerReminder(r);
+            reminderList.add(r);
+
+        }
+        updateUI();
+    }
+
+    private void registerTenSingleReminders() {
+        for(int i = 0; i < 10; i++){
+            Reminder r = remindersTest.singleReminders.get(i);
+            registerReminder(r);
+            saveInStorage(r);
+            registerReminder(r);
+            reminderList.add(r);
+        }
+        updateUI();
+    }
+
+    private void registerFiveCompoundReminders() {
+        for(int i = 0; i < 5; i++){
+            Reminder r = remindersTest.compoundReminders.get(i);
+            registerReminder(r);
+            saveInStorage(r);
+            registerReminder(r);
+            reminderList.add(r);
+        }
+        updateUI();
+    }
+
+    private void registerFiveSingleReminders() {
+        for(int i = 0; i < 5; i++){
+            Reminder r = remindersTest.singleReminders.get(i);
+            registerReminder(r);
+            saveInStorage(r);
+            registerReminder(r);
+            reminderList.add(r);
+        }
+        updateUI();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == MAIN_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 Reminder r = (Reminder) data.getSerializableExtra("reminder");
                 saveInStorage(r);
                 registerReminder(r);
+                reminderList.add(r);
 
             }
         }
@@ -108,11 +185,15 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     @Override
     public void onReminderDeletePressed(Reminder reminder) {
         storage.delete(reminder.getUid());
+        Fence f = reminder.getFence();
+        reminderList.remove(reminder);
+        FenceManager.getInstance(this).unregisterFence(f);
         Toast.makeText(this, "Deleted " + reminder.getText(), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 updateUI();
+                Log.d(TAG, "run: post-delayed");
             }
         }, 1000L);
     }

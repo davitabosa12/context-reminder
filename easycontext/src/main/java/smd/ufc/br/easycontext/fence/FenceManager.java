@@ -102,7 +102,7 @@ public class FenceManager {
 
     @Nullable
     public Task unregisterFence(final Fence fence){
-        if(isFenceRegistered(fence)){
+        if(true){
             //unregister the fence
             final String fenceName = fence.getName();
             final Task t = Awareness.getFenceClient(context).updateFences(new FenceUpdateRequest.Builder().removeFence(fence.getName()).build());

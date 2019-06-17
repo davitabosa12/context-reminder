@@ -80,6 +80,21 @@ public class Reminder implements Serializable {
         return object.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Reminder reminder = (Reminder) o;
+
+        return uid != null ? uid.equals(reminder.uid) : reminder.uid == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return uid != null ? uid.hashCode() : 0;
+    }
+
     public static class Builder{
         Reminder reminder;
         private String text;

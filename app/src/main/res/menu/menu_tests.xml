@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_test_5_single"
+        android:title="Test 5 single" />
+    <item
+        android:id="@+id/item_test_10_single"
+        android:title="Test 10 single" />
+    <item
+        android:id="@+id/item_test_5_compound"
+        android:title="Test 5 compound" />
+    <item
+        android:id="@+id/item_test_10_compound"
+        android:title="Test 5 compound" />
+</menu>
