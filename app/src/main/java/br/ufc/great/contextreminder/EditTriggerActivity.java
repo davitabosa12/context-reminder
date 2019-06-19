@@ -20,30 +20,21 @@ import br.ufc.great.contextreminder.model.trigger.HeadphoneTrigger;
 import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
 import br.ufc.great.contextreminder.model.trigger.Trigger;
-import smd.ufc.br.easycontext.fence.DetectedActivityRule;
-import smd.ufc.br.easycontext.fence.Fence;
-import smd.ufc.br.easycontext.fence.HeadphoneRule;
-import smd.ufc.br.easycontext.fence.LocationRule;
-import smd.ufc.br.easycontext.fence.Rule;
-import smd.ufc.br.easycontext.fence.TimeRule;
-import smd.ufc.br.easycontext.fence.type.FenceType;
 
-public class EditTriggerActivity extends FragmentActivity implements TimeFragment.OnTimeRuleSelected,
-LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected{
+public class EditTriggerActivity extends FragmentActivity{
 
     private static final String TAG ="EditTriggerActivity";
     FragmentManager fm;
 
     String method;
     Provider provider;
-    Fence fenceToBeEdited;
     private Trigger trigger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trigger);
-        fenceToBeEdited = (Fence) getIntent().getSerializableExtra("fence");
+        /*fenceToBeEdited = (Fence) getIntent().getSerializableExtra("fence");
         if (fenceToBeEdited == null) {
             //user is creating new fence...
             provider = (Provider) getIntent().getSerializableExtra("provider");
@@ -55,11 +46,11 @@ LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected
             provider = extractFenceRules(fenceToBeEdited.getRule());
             //method = extractMethodName(provider, fenceToBeEdited.getMethodName());
         }
-
+*/
 
 
     }
-
+/*
     private void updateFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -154,4 +145,5 @@ LocationFragment.OnLocationRuleSelected, ActivityFragment.OnActivityRuleSelected
             setResult(RESULT_OK, response);
         }
     }
+    */
 }

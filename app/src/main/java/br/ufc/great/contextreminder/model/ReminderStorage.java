@@ -46,6 +46,18 @@ public class ReminderStorage {
                 .apply();
     }
 
+    public void deleteAll(){
+        List<Reminder> reminders = new ArrayList<>();
+        Set<String> keys = new HashSet<>();
+        keys = sharedPrefs.getAll().keySet();
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        for (String key :
+                keys) {
+            editor.remove(key);
+        }
+        editor.apply();
+    }
     public List<Reminder> getAll(){
         List<Reminder> reminders = new ArrayList<>();
         Set<String> keys = new HashSet<>();

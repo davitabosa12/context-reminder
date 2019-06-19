@@ -21,13 +21,6 @@ import br.ufc.great.contextreminder.model.trigger.ActivityTrigger;
 import br.ufc.great.contextreminder.model.trigger.HeadphoneTrigger;
 import br.ufc.great.contextreminder.model.trigger.LocationTrigger;
 import br.ufc.great.contextreminder.model.trigger.TimeTrigger;
-import smd.ufc.br.easycontext.fence.AggregateRule;
-import smd.ufc.br.easycontext.fence.DetectedActivityRule;
-import smd.ufc.br.easycontext.fence.Fence;
-import smd.ufc.br.easycontext.fence.HeadphoneRule;
-import smd.ufc.br.easycontext.fence.LocationRule;
-import smd.ufc.br.easycontext.fence.Rule;
-import smd.ufc.br.easycontext.fence.TimeRule;
 
 
 public class CreateReminderActivity extends AppCompatActivity {
@@ -36,7 +29,6 @@ public class CreateReminderActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_EDIT = 15478;
     private static final String TAG = "CreateReminderActivity";
     Reminder reminder;
-    Fence fence;
     Button btnCreateContext;
     ImageButton btnEditContext;
     TextView txvSelectedContext;
@@ -50,9 +42,9 @@ public class CreateReminderActivity extends AppCompatActivity {
         btnEditContext = findViewById(R.id.btn_edit_context);
         txvSelectedContext = findViewById(R.id.txv_selected_context);
         edtReminderText = findViewById(R.id.edt_text_reminder);
-        hideEdit();
+        //hideEdit();
     }
-
+    /*
     private void showEdit() {
         //show the context button and text
         btnEditContext.setVisibility(View.VISIBLE);
@@ -103,13 +95,6 @@ public class CreateReminderActivity extends AppCompatActivity {
     public void edit(View v) {
         create(v);
         return;
-        /*if (fence == null) {
-            //error
-        } else {
-            Intent i = new Intent(this, EditTriggerActivity.class);
-            i.putExtra("fence", fence);
-            startActivityForResult(i, REQUEST_CODE_EDIT);
-        }*/
     }
 
     @Override
@@ -259,5 +244,5 @@ public class CreateReminderActivity extends AppCompatActivity {
         }
     }
 
-
+*/
 }

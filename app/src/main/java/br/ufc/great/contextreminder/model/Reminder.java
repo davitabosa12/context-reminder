@@ -1,26 +1,27 @@
 package br.ufc.great.contextreminder.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.android.gms.awareness.fence.AwarenessFence;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import smd.ufc.br.easycontext.fence.Fence;
-
-
 public class Reminder implements Serializable {
 
     private String uid;
     private String text;
-    private Fence fence;
+    private AwarenessFence fence;
     private boolean repeating;
 
     private Reminder() {
     }
 
-    public Reminder(String uid, String text, Fence fence, boolean repeating) {
+    public Reminder(String uid, String text, AwarenessFence fence, boolean repeating) {
         this.uid = uid;
         this.text = text;
         this.fence = fence;
@@ -28,13 +29,7 @@ public class Reminder implements Serializable {
     }
 
     public static Reminder fromJson(String json) {
-        JsonObject rem = new Gson().fromJson(json, JsonObject.class);
-        String uid = rem.get("uid").getAsString();
-        String text = rem.get("text").getAsString();
-        Fence fence = Fence.fromJson(rem.get("fence").toString());
-        boolean repeating = rem.get("repeating").getAsBoolean();
-        return new Reminder(uid,text,fence,repeating);
-
+        return new Gson().fromJson(json, Reminder.class);
     }
 
     public boolean isRepeating() {
@@ -62,22 +57,17 @@ public class Reminder implements Serializable {
         this.text = text;
     }
 
-    public Fence getFence() {
+    public AwarenessFence getFence() {
         return fence;
     }
 
-    public void setFence(Fence fence) {
+    public void setFence(AwarenessFence fence) {
         this.fence = fence;
     }
 
     @Override
     public String toString() {
-        JsonObject object = new JsonObject();
-        object.addProperty("uid", uid);
-        object.addProperty("text", text);
-        object.add("fence", new Gson().fromJson(fence.toString(), JsonObject.class));
-        object.addProperty("repeating", repeating);
-        return object.toString();
+        return new Gson().toJson(this);
     }
 
     @Override
@@ -98,7 +88,7 @@ public class Reminder implements Serializable {
     public static class Builder{
         Reminder reminder;
         private String text;
-        private Fence rule; //Todo: change ruleset
+        private AwarenessFence rule;
         private boolean repeating;
 
         public Builder(){
@@ -110,7 +100,7 @@ public class Reminder implements Serializable {
             return this;
         }
 
-        public Builder setRule(Fence rule) {
+        public Builder setRule(AwarenessFence rule) {
             reminder.setFence(rule);
             return this;
         }

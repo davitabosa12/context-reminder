@@ -1,6 +1,8 @@
 package br.ufc.great.contextreminder;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.FenceClient;
+import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.android.gms.awareness.fence.FenceUpdateRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -24,8 +30,6 @@ import java.util.List;
 
 import br.ufc.great.contextreminder.model.Reminder;
 import br.ufc.great.contextreminder.model.ReminderStorage;
-import smd.ufc.br.easycontext.fence.Fence;
-import smd.ufc.br.easycontext.fence.FenceManager;
 
 public class MainActivity extends AppCompatActivity implements ReminderView.OnReminderDeletePressed {
 
@@ -35,16 +39,20 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     LinearLayout linearLayout;
     ReminderStorage storage;
     RemindersCollection remindersTest;
+    FenceClient client;
+    NotificationAction receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         remindersTest = new RemindersCollection(this);
-
+        client = Awareness.getFenceClient(this);
         storage = ReminderStorage.getInstance(this);
         reminderList = storage.getAll();
         linearLayout = findViewById(R.id.ll_scroll);
+        receiver = new NotificationAction();
+        storage.deleteAll();
         registerSavedFences();
         updateUI();
     }
@@ -160,12 +168,19 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     }
 
     private void registerReminder(final Reminder r) {
-        FenceManager manager = FenceManager.getInstance(this);
+
+        IntentFilter filter = new IntentFilter(r.getUid());
+        registerReceiver(receiver, filter);
+
+        Intent intent = new Intent(r.getUid());
         Bundle bundle = new Bundle();
         bundle.putString("text", r.getText());
-        manager.registerFence2(r.getFence(), bundle).addOnSuccessListener(new OnSuccessListener() {
+        intent.putExtra("extra", bundle);
+        PendingIntent pi = PendingIntent.getBroadcast(this, 123, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        client.updateFences(new FenceUpdateRequest.Builder()
+        .addFence(r.getUid(), r.getFence(), pi).build()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Object o) {
+            public void onSuccess(Void aVoid) {
                 Log.d(TAG, "onSuccess: Fence registered. " + r.getText());
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -185,9 +200,11 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     @Override
     public void onReminderDeletePressed(Reminder reminder) {
         storage.delete(reminder.getUid());
-        Fence f = reminder.getFence();
+
+        client.updateFences(new FenceUpdateRequest.Builder()
+                .removeFence(reminder.getUid())
+                .build());
         reminderList.remove(reminder);
-        FenceManager.getInstance(this).unregisterFence(f);
         Toast.makeText(this, "Deleted " + reminder.getText(), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override

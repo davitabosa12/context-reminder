@@ -3,8 +3,10 @@ package br.ufc.great.contextreminder;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import
         android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -13,13 +15,14 @@ import android.util.Log;
 
 import com.google.android.gms.awareness.fence.FenceState;
 
-import smd.ufc.br.easycontext.fence.FenceAction;
 
-public class NotificationAction implements FenceAction {
+public class NotificationAction extends BroadcastReceiver {
     private static final String CHANNEL_ID = "lol wtf bbq";
     private  static  String TAG = "NotificationAction";
     @Override
-    public void doOperation(Context context, FenceState state, Bundle data) {
+    public void onReceive(Context context, Intent intent) {
+        FenceState state = FenceState.extract(intent);
+        Bundle data = intent.getBundleExtra("extra");
         if(state.getCurrentState() == FenceState.TRUE){
             String s = data.getString("text");
             pushNotification(context, s);
@@ -63,6 +66,5 @@ public class NotificationAction implements FenceAction {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 
 }
