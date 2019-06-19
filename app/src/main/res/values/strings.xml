@@ -27,6 +27,32 @@
 
     </string-array>
 
+    <string-array name="single_fence_names">
+        <item>Headphone plugging</item>
+        <item>Headphone unplugging</item>
+        <item>Activity Starting Still</item>
+        <item>Activity started walking</item>
+        <item>Activity started running</item>
+        <item>Activity in vehicle</item>
+        <item>Activity on bicycle</item>
+        <item>Activity stopping still</item>
+        <item>Activity stopping waking</item>
+        <item>Activity stopping in vehicle</item>
+    </string-array>
+
+    <string-array name="compound_fence_names">
+            <item>plugged &amp; still       </item>
+            <item>plugged &amp; walking     </item>
+            <item>plugged &amp; running     </item>
+            <item>plugged &amp; in vehicle  </item>
+            <item>plugged &amp; on bicycle  </item>
+            <item>unplugged &amp; still     </item>
+            <item>unplugged &amp; walking   </item>
+            <item>unplugged &amp; running   </item>
+            <item>unplugged &amp; in vehicle</item>
+            <item>unplugged &amp; on bicycle</item>
+    </string-array>
+
     <string-array name="days_of_month">
         <item>1st</item>
         <item>2nd</item>

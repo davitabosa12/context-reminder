@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ReminderView.OnRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        remindersTest = new RemindersCollection();
+        remindersTest = new RemindersCollection(this);
 
         storage = ReminderStorage.getInstance(this);
         reminderList = storage.getAll();

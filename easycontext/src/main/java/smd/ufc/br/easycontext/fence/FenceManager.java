@@ -6,14 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.awareness.Awareness;
 import com.google.android.gms.awareness.FenceClient;
+import com.google.android.gms.awareness.fence.FenceQueryRequest;
+import com.google.android.gms.awareness.fence.FenceQueryResponse;
 import com.google.android.gms.awareness.fence.FenceState;
 import com.google.android.gms.awareness.fence.FenceUpdateRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import smd.ufc.br.easycontext.GeneralReceiver;
 
@@ -29,10 +34,10 @@ import smd.ufc.br.easycontext.GeneralReceiver;
  * Created by davitabosa on 08/08/2018.
  */
 
-public class FenceManager {
+public class FenceManager implements OnCompleteListener<FenceQueryResponse> {
     private static FenceManager instance;
     private FenceClient client;
-    private List<Fence> registeredFences;
+    private List<String> registeredFences;
     private Context context;
 
 
@@ -40,6 +45,8 @@ public class FenceManager {
         this.context = ctx;
         this.client = Awareness.getFenceClient(context);
         registeredFences = new ArrayList<>();
+        client.queryFences(FenceQueryRequest.all()).addOnCompleteListener(this);
+
 
     }
 
@@ -50,7 +57,7 @@ public class FenceManager {
         return instance;
     }
     public boolean isFenceRegistered(Fence fence){
-        if(registeredFences.indexOf(fence) < 0){
+        if(registeredFences.indexOf(fence.getName()) < 0){
             //fence isn't registered
             return false;
         }
@@ -87,7 +94,7 @@ public class FenceManager {
 
     }
 
-    public Task registerFence2(Fence fence, Bundle extras){
+    public Task registerFence2(Fence fence, @Nullable Bundle extras){
         Intent i = new Intent(context, GeneralReceiver.class);
         String actionName = fence.getAction().getClass().getName();
         i.putExtra("actionName", actionName);
@@ -95,48 +102,43 @@ public class FenceManager {
         //pending intent to trigger GeneralReceiver
         PendingIntent pi = PendingIntent.getBroadcast(context, new Random().nextInt(), i , PendingIntent.FLAG_CANCEL_CURRENT);
         //register info to Awareness API
-        Task t = client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(), fence.getRule().getAwarenessFence(), pi).build());
-        return t;
+        return client.updateFences(new FenceUpdateRequest.Builder().addFence(fence.getName(), fence.getRule().getAwarenessFence(), pi).build());
     }
 
 
     @Nullable
     public Task unregisterFence(final Fence fence){
-        if(true){
-            //unregister the fence
-            final String fenceName = fence.getName();
-            final Task t = Awareness.getFenceClient(context).updateFences(new FenceUpdateRequest.Builder().removeFence(fence.getName()).build());
+            return unregisterFence(fence.getName());
+    }
 
-            t.addOnSuccessListener(new OnSuccessListener() {
-                @Override
-                public void onSuccess(Object o) {
-                    Log.d("AwarenessLib", "Fence removal successful: " + fenceName);
-                    registeredFences.remove(fence);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("AwarenessLib", "Fence removal failed for " + fenceName + ": " + t.getException().getMessage());
-                }
-            });
-            return t;
-        } else{
-            //can't unregister a fence thar is not registered
-            Log.d("AwarenessLib","Can't unregister fence " + fence.getName() + " that is not registered");
-            return null;
-        }
+    public Task unregisterFence(final String fenceString){
+        final Task t = Awareness.getFenceClient(context).updateFences(new FenceUpdateRequest.Builder().removeFence(fenceString).build());
+
+        t.addOnSuccessListener(new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                Log.d("AwarenessLib", "Fence removal successful: " + fenceString);
+                registeredFences.remove(fenceString);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("AwarenessLib", "Fence removal failed for " + fenceString + ": " + t.getException().getMessage());
+            }
+        });
+        return t;
     }
 
     public void unregisterAll(){
 
-        final Iterator<Fence> it = registeredFences.iterator();
+        final Iterator<String> it = registeredFences.iterator();
         while(it.hasNext()){
-            final Fence f  = it.next();
+            final String f  = it.next();
             final Task t = unregisterFence(f);
             t.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.e("AwarenessLib", "Error removing fence " + f.getName() + ". " + t.getException().getMessage());
+                    Log.e("AwarenessLib", "Error removing fence " + f + ". " + t.getException().getMessage());
                 }
             }).addOnSuccessListener(new OnSuccessListener() {
                 @Override
@@ -149,4 +151,10 @@ public class FenceManager {
     }
 
 
+    @Override
+    public void onComplete(@NonNull Task<FenceQueryResponse> task) {
+        Set<String> fromApi = task.getResult().getFenceStateMap().getFenceKeys();
+        registeredFences.clear();
+        registeredFences.addAll(fromApi);
+    }
 }
